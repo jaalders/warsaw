@@ -1,0 +1,18 @@
+{
+  "menus": [
+    {
+      "id": 1,
+      "name": "test menu 1",
+      "description": "this is a test description"
+    },
+    {
+      "id": 2,
+      "name": "test menu 2",
+      "description": "this is the second menu description with additional text"
+    },
+    {
+      "id": 3,
+      "name": "test menu 3"
+    }
+  ]
+}
