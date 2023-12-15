@@ -53,7 +53,7 @@ import CreatedMenuList from 'src/components/CreatedMenuList.vue';
 
 const leftClick = (e) => {
   return e.button === 0;
-}
+};
 
 const selectedDate = ref(today()),
   calendar = ref(null),
@@ -91,7 +91,7 @@ const otherDayIdentifier = computed(() => {
   return false;
 });
 
-const onMouseDownDay = (scope, event) => {
+const onMouseDownDay = ({ scope, event }) => {
   if (leftClick(event)) {
     if (
       mobile.value === true &&
@@ -108,9 +108,9 @@ const onMouseDownDay = (scope, event) => {
     anchorTimestamp.value = scope.timestamp;
     otherTimestamp.value = scope.timestamp;
   }
-}
+};
 
-const onMouseUpDay = (scope, event) => {
+const onMouseUpDay = ({ scope, event }) => {
   if (leftClick(event)) {
     // mouse is up, capture last and cancel selection
     otherTimestamp.value = scope.timestamp;
@@ -118,42 +118,42 @@ const onMouseUpDay = (scope, event) => {
     console.log(anchorTimestamp.value);
     console.log(otherTimestamp.value);
   }
-}
+};
 
-const onMouseMoveDay = (scope) => {
+const onMouseMoveDay = ({ scope }) => {
   if (mouseDown.value === true && scope.outside !== true) {
     otherTimestamp.value = scope.timestamp;
   }
-}
+};
 
 const onToday = () => {
   calendar.value.moveToToday();
-}
+};
 const onPrev = () => {
   calendar.value.prev();
-}
+};
 const onNext = () => {
   calendar.value.next();
-}
+};
 const onMoved = (data) => {
   console.log('onMoved', data);
-}
+};
 const onChange = (data) => {
   console.log('onChange', data);
 };
 const onClickDate = (data) => {
   console.log('onClickDate', data);
-}
-// const onClickDay = (data) => {
-//   console.log('onClickDay', data);
-// }
+};
+const onClickDay = (data) => {
+  console.log('onClickDay', data);
+};
 const onClickWorkweek = (data) => {
   console.log('onClickWorkweek', data);
-}
+};
 const onClickHeadDay = (data) => {
   console.log('onClickHeadDay', data);
-}
+};
 const onClickHeadWorkweek = (data) => {
   console.log('onClickHeadWorkweek', data);
-}
+};
 </script>
