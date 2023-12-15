@@ -130,27 +130,27 @@ import { initializeApp } from 'firebase/app';
 import { getDocs, collection, getFirestore } from 'firebase/firestore';
 import { firebaseKey } from '../authorization/firebaseKey';
 
-interface IFirebaseTodos {
+interface IFirebaseResponseStructure {
   id: number;
   name: string;
   description?: string;
 }
 
-const firebaseApp = initializeApp(firebaseKey);
-const db = getFirestore(firebaseApp);
-const todos = ref<IFirebaseTodos[]>();
 const leftDrawerOpen = ref(false);
 const link = ref('/');
+const firebaseApp = initializeApp(firebaseKey);
+const db = getFirestore(firebaseApp);
+const todos = ref<IFirebaseResponseStructure[]>();
 
-async function fetchTodos(): Promise<IFirebaseTodos[]> {
+async function fetchTodos(): Promise<IFirebaseResponseStructure[]> {
   try {
-    const todosCollection = collection(db, 'todos');
-    const todosSnapshot = await getDocs(todosCollection);
+    const todosSnapshot = await getDocs(collection(db, 'todos'));
 
-    return todosSnapshot.docs.map((doc) => {
-      const data = doc.data() as IFirebaseTodos;
-      return data;
+    const todoData = todosSnapshot.docs.map((doc) => {
+      return doc.data() as IFirebaseResponseStructure;
     });
+
+    return todoData;
   } catch (error) {
     console.error('Error fetching todos:', error);
     throw error;
