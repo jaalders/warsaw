@@ -125,27 +125,45 @@
 <style lang="scss"></style>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { getDocs, collection, getFirestore } from 'firebase/firestore';
 import { firebaseKey } from '../authorization/firebaseKey';
 
+interface IFirebaseTodos {
+  id: number;
+  name: string;
+  description?: string;
+}
+
 const firebaseApp = initializeApp(firebaseKey);
-
-const fetchData = async () => {
-  const db = getFirestore(firebaseApp);
-  const querySnapshot = await getDocs(collection(db, 'todos'));
-  querySnapshot.forEach((doc) => {
-    console.log(`${doc.data().description}`);
-  });
-};
-
-onMounted(() => {
-  fetchData();
-});
-
+const db = getFirestore(firebaseApp);
+const todos = ref<IFirebaseTodos[]>();
 const leftDrawerOpen = ref(false);
 const link = ref('/');
+
+async function fetchTodos(): Promise<IFirebaseTodos[]> {
+  try {
+    const todosCollection = collection(db, 'todos');
+    const todosSnapshot = await getDocs(todosCollection);
+
+    return todosSnapshot.docs.map((doc) => {
+      const data = doc.data() as IFirebaseTodos;
+      return data;
+    });
+  } catch (error) {
+    console.error('Error fetching todos:', error);
+    throw error;
+  }
+}
+
+onBeforeMount(async () => {
+  try {
+    todos.value = await fetchTodos();
+  } catch (error) {
+    console.log('Error fetching menu list:', error);
+  }
+});
 
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;

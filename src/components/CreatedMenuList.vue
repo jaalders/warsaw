@@ -59,6 +59,10 @@ async function getMenuList(): Promise<IMenuSettings[]> {
 }
 
 onBeforeMount(async () => {
-  menuList.value = await getMenuList();
+  try {
+    menuList.value = await getMenuList();
+  } catch (error) {
+    console.error('Error setting menu list:', error);
+  }
 });
 </script>
