@@ -127,7 +127,7 @@
 <script setup lang="ts">
 import { onBeforeMount, ref } from 'vue';
 import { initializeApp } from 'firebase/app';
-import { getDocs, collection, getFirestore } from 'firebase/firestore';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { firebaseKey } from '../authorization/firebaseKey';
 
 interface IFirebaseResponseStructure {
@@ -144,11 +144,22 @@ const todos = ref<IFirebaseResponseStructure[]>();
 
 async function fetchTodos(): Promise<IFirebaseResponseStructure[]> {
   try {
-    const todosSnapshot = await getDocs(collection(db, 'todos'));
+    // MULTIPLE EXAMPLE
+    // const todosSnapshot = await getDocs(collection(db, 'todos'));
 
-    const todoData = todosSnapshot.docs.map((doc) => {
-      return doc.data() as IFirebaseResponseStructure;
-    });
+    // const todoData = todosSnapshot.docs.map((doc) => {
+    //   return doc.data() as IFirebaseResponseStructure;
+    // });
+
+    // return todoData;
+
+    const todoId = 'HBC5lqP1jUUQpD8F5XkQ';
+    const todoDocRef = doc(db, 'todos', todoId);
+    const todoSnapshot = await getDoc(todoDocRef);
+
+    const todoData = todoSnapshot.exists()
+      ? [todoSnapshot.data() as IFirebaseResponseStructure]
+      : [];
 
     return todoData;
   } catch (error) {
