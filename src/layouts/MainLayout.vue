@@ -125,12 +125,29 @@
 <style lang="scss"></style>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { firebaseKey } from '../authorization/firebaseKey';
+
+const firebaseApp = initializeApp(firebaseKey);
+
+const fetchData = async () => {
+  const db = getFirestore(firebaseApp);
+  const querySnapshot = await getDocs(collection(db, 'todos'));
+  querySnapshot.forEach((doc) => {
+    console.log(`${doc.data().description}`);
+  });
+};
+
+onMounted(() => {
+  fetchData();
+});
 
 const leftDrawerOpen = ref(false);
 const link = ref('/');
 
-function toggleLeftDrawer() {
+const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
-}
+};
 </script>

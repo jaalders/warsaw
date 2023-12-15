@@ -50,6 +50,7 @@ interface IMenuSettings {
 async function getMenuList(): Promise<IMenuSettings[]> {
   try {
     const response: IMenuResponse = await import('../stores/menuRecords.json');
+
     return response.menus;
   } catch (error) {
     console.error('Error fetching menu list:', error);
