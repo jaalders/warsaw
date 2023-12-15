@@ -153,11 +153,10 @@ async function fetchTodos(): Promise<IFirebaseResponseStructure[]> {
 
     // return todoData;
 
-    const todoId = 'HBC5lqP1jUUQpD8F5XkQ';
-    const todoDocRef = doc(db, 'todos', todoId);
-    const todoSnapshot = await getDoc(todoDocRef);
+    let todoData: IFirebaseResponseStructure[];
+    const todoSnapshot = await getDoc(doc(db, 'todos', 'HBC5lqP1jUUQpD8F5XkQ'));
 
-    const todoData = todoSnapshot.exists()
+    todoData = todoSnapshot.exists()
       ? [todoSnapshot.data() as IFirebaseResponseStructure]
       : [];
 
