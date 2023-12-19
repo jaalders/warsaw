@@ -5,7 +5,6 @@
       <q-card style="width: 700px; max-width: 80vw">
         <q-card-section>
           <div class="text-h6">selectMenuDialog</div>
-          <div>test div</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
