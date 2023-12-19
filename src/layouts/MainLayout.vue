@@ -129,20 +129,15 @@ import { onBeforeMount, ref } from 'vue';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { firebaseKey } from '../authorization/firebaseKey';
-
-interface IFirebaseResponseStructure {
-  id: number;
-  name: string;
-  description?: string;
-}
+import { IMenuSettings } from '../interfaces';
 
 const leftDrawerOpen = ref(false);
 const link = ref('/');
 const firebaseApp = initializeApp(firebaseKey);
 const db = getFirestore(firebaseApp);
-const todos = ref<IFirebaseResponseStructure[]>();
+const todos = ref<IMenuSettings[]>();
 
-async function fetchTodos(): Promise<IFirebaseResponseStructure[]> {
+async function fetchTodos(): Promise<IMenuSettings[]> {
   try {
     // MULTIPLE EXAMPLE
     // const todosSnapshot = await getDocs(collection(db, 'todos'));
@@ -153,11 +148,11 @@ async function fetchTodos(): Promise<IFirebaseResponseStructure[]> {
 
     // return todoData;
 
-    let todoData: IFirebaseResponseStructure[];
+    let todoData: IMenuSettings[];
     const todoSnapshot = await getDoc(doc(db, 'todos', 'HBC5lqP1jUUQpD8F5XkQ'));
 
     todoData = todoSnapshot.exists()
-      ? [todoSnapshot.data() as IFirebaseResponseStructure]
+      ? [todoSnapshot.data() as IMenuSettings]
       : [];
 
     return todoData;

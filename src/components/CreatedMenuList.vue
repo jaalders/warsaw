@@ -78,22 +78,12 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from 'vue';
-
-let menuList = ref<IMenuSettings[]>();
+import { IMenuResponse, IMenuSettings } from '../interfaces'
 
 const emit = defineEmits(['fetchedMenuList']);
+const menuList = ref<IMenuSettings[]>();
 const selectMenuDialog = ref(false);
 const menuSettings = ref<IMenuSettings>();
-
-interface IMenuResponse {
-  menus: IMenuSettings[];
-}
-
-interface IMenuSettings {
-  id: number;
-  name: string;
-  description?: string;
-}
 
 async function getMenuList(): Promise<IMenuSettings[]> {
   try {
