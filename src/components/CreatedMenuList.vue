@@ -37,6 +37,8 @@ import { onBeforeMount, ref } from 'vue';
 
 let menuList = ref<IMenuSettings[]>();
 
+const emit = defineEmits(['fetchedMenuList']);
+
 interface IMenuResponse {
   menus: IMenuSettings[];
 }
@@ -59,10 +61,7 @@ async function getMenuList(): Promise<IMenuSettings[]> {
 }
 
 onBeforeMount(async () => {
-  try {
-    menuList.value = await getMenuList();
-  } catch (error) {
-    console.error('Error setting menu list:', error);
-  }
+  menuList.value = await getMenuList();
+  emit('fetchedMenuList', menuList.value);
 });
 </script>

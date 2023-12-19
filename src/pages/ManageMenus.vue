@@ -1,6 +1,34 @@
 <template>
   <div class="subcontent">
-    <CreatedMenuList />
+    <CreatedMenuList @fetchedMenuList="fetchedMenuList" />
+    <q-dialog v-model="selectMenuDialog">
+      <q-card style="width: 700px; max-width: 80vw">
+        <q-card-section>
+          <div class="text-h6">selectMenuDialog</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-select
+            filled
+            v-model="selectedMenuChoice"
+            :options="menuList"
+            :option-value="
+              (opt) => (Object(opt) === opt && 'id' in opt ? opt.id : null)
+            "
+            :option-label="
+              (opt) => (Object(opt) === opt && 'name' in opt ? opt.name : null)
+            "
+            emit-value
+            map-options
+            style="min-width: 250px; max-width: 300px"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right" class="bg-white text-teal">
+          <q-btn flat label="OK" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <DatePickerNavigation @today="onToday" @prev="onPrev" @next="onNext" />
 
     <div style="display: flex; justify-content: center; align-items: center">
@@ -54,6 +82,10 @@ import CreatedMenuList from 'src/components/CreatedMenuList.vue';
 const leftClick = (e) => {
   return e.button === 0;
 };
+
+const selectMenuDialog = ref(false);
+const menuList = ref([]);
+const selectedMenuChoice = ref(null);
 
 const selectedDate = ref(today()),
   calendar = ref(null),
@@ -117,6 +149,7 @@ const onMouseUpDay = ({ scope, event }) => {
     mouseDown.value = false;
     console.log(anchorTimestamp.value);
     console.log(otherTimestamp.value);
+    selectMenuDialog.value = true;
   }
 };
 
@@ -124,6 +157,10 @@ const onMouseMoveDay = ({ scope }) => {
   if (mouseDown.value === true && scope.outside !== true) {
     otherTimestamp.value = scope.timestamp;
   }
+};
+
+const fetchedMenuList = (returnedMenus) => {
+  menuList.value = returnedMenus;
 };
 
 const onToday = () => {

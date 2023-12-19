@@ -168,11 +168,8 @@ async function fetchTodos(): Promise<IFirebaseResponseStructure[]> {
 }
 
 onBeforeMount(async () => {
-  try {
-    todos.value = await fetchTodos();
-  } catch (error) {
-    console.log('Error fetching menu list:', error);
-  }
+  todos.value = await fetchTodos();
+  // TODO - Convert to class structure with function call.
 });
 
 const toggleLeftDrawer = () => {
