@@ -21,11 +21,55 @@
 
             <q-card-actions vertical class="justify-around q-px-md">
               <q-btn flat round color="red" icon="favorite" />
-              <q-btn flat round color="primary" icon="edit" />
+              <q-btn
+                flat
+                round
+                color="primary"
+                icon="edit"
+                @click="editMenuSettings(menu)"
+              />
             </q-card-actions>
           </q-card-section>
         </q-card>
       </div>
+      <q-dialog v-model="selectMenuDialog">
+        <q-card style="width: 700px; max-width: 80vw">
+          <q-card-section>
+            <div class="text-h6">Edit Menu</div>
+          </q-card-section>
+
+          <q-card-section class="q-pt-none">
+            <q-form v-if="menuSettings" class="q-gutter-md">
+              <q-input
+                filled
+                v-model="menuSettings.name"
+                label="Menu Name"
+                lazy-rules
+                :rules="[
+                  (val) => (val && val.length > 0) || 'Please type something',
+                ]"
+              />
+
+              <q-input
+                filled
+                v-model="menuSettings.description"
+                label="Menu Description"
+              />
+            </q-form>
+          </q-card-section>
+
+          <q-card-actions align="right" class="bg-white text-teal">
+            <q-btn label="Submit" type="submit" color="primary" />
+            <q-btn
+              label="Reset"
+              type="reset"
+              color="primary"
+              flat
+              class="q-ml-sm"
+            />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </div>
   </div>
 </template>
@@ -38,6 +82,8 @@ import { onBeforeMount, ref } from 'vue';
 let menuList = ref<IMenuSettings[]>();
 
 const emit = defineEmits(['fetchedMenuList']);
+const selectMenuDialog = ref(false);
+const menuSettings = ref<IMenuSettings>();
 
 interface IMenuResponse {
   menus: IMenuSettings[];
@@ -59,6 +105,11 @@ async function getMenuList(): Promise<IMenuSettings[]> {
     return [];
   }
 }
+
+const editMenuSettings = (editSelectedMenu: IMenuSettings) => {
+  selectMenuDialog.value = true;
+  menuSettings.value = editSelectedMenu;
+};
 
 onBeforeMount(async () => {
   menuList.value = await getMenuList();
