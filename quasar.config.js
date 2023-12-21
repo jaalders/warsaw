@@ -11,6 +11,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const { configure } = require('quasar/wrappers');
+const webpack = require('webpack');
 
 module.exports = configure(function (ctx) {
   return {
@@ -73,7 +74,15 @@ module.exports = configure(function (ctx) {
 
       // https://v2.quasar.dev/quasar-cli-webpack/handling-webpack
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-      // chainWebpack (/* chain */) {}
+      chainWebpack(chain) {
+        chain.plugin('define-ui').use(webpack.DefinePlugin, [
+          {
+            __UI_VERSION__: `'${
+              require('@quasar/quasar-ui-qcalendar/package.json').version
+            }'`,
+          },
+        ]);
+      },
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer

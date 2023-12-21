@@ -12,4 +12,4 @@
   </q-page>
 </template>
 
-<script setup></script>
+<script setup lang="ts"></script>
