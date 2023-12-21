@@ -1,10 +1,11 @@
 <template>
-  <q-page>
+  <q-page class="row items-center justify-evenly">
     <div class="q-pa-md">
       <div class="row q-col-gutter-sm">
-        <div class="col-xs-auto items-center justify-evenly">
-          <p>this is a test</p>
-        </div>
+        <p>this is a test</p>
+      </div>
+      <div class="row q-col-gutter-sm">
+        <p>this is a test</p>
       </div>
     </div>
   </q-page>

@@ -65,6 +65,7 @@
               @mousemove-day="onMouseMoveDay"
               @change="onChange"
               @moved="onMoved"
+              @click-day="onClickDay"
               @click-date="onClickDate"
               @click-workweek="onClickWorkweek"
               @click-head-workweek="onClickHeadWorkweek"

@@ -18,10 +18,9 @@
         <q-item
           clickable
           v-ripple
-          v-model="link"
-          :active="link === '/'"
-          to="/"
-          @click="link = '/'"
+          :class="{ active: isActive('dashboard') }"
+          :to="{ path: 'dashboard' }"
+          @click="handleClick('dashboard')"
         >
           <q-item-section avatar>
             <i
@@ -34,13 +33,13 @@
 
           <q-item-section>Dashboard</q-item-section>
         </q-item>
+
         <q-item
           clickable
           v-ripple
-          v-model="link"
-          :active="link === 'create-menu'"
-          to="/create-menu"
-          @click="link = 'create-menu'"
+          :class="{ active: isActive('create-menu') }"
+          :to="{ path: 'create-menu' }"
+          @click="handleClick('create-menu')"
         >
           <q-item-section avatar>
             <i
@@ -57,10 +56,9 @@
         <q-item
           clickable
           v-ripple
-          v-model="link"
-          :active="link === 'manage-menus'"
-          to="/manage-menus"
-          @click="link = 'manage-menus'"
+          :class="{ active: isActive('manage-menus') }"
+          :to="{ path: 'manage-menus' }"
+          @click="handleClick('manage-menus')"
         >
           <q-item-section avatar>
             <i
@@ -77,10 +75,9 @@
         <q-item
           clickable
           v-ripple
-          v-model="link"
-          :active="link === 'configure-displays'"
-          to="/configure-displays"
-          @click="link = 'configure-displays'"
+          :class="{ active: isActive('configure-displays') }"
+          :to="{ path: 'configure-displays' }"
+          @click="handleClick('configure-displays')"
         >
           <q-item-section avatar>
             <i
@@ -97,10 +94,9 @@
         <q-item
           clickable
           v-ripple
-          v-model="link"
-          :active="link === 'menu-analytics'"
-          to="/menu-analytics"
-          @click="link = 'menu-analytics'"
+          :class="{ active: isActive('menu-analytics') }"
+          :to="{ path: 'menu-analytics' }"
+          @click="handleClick('menu-analytics')"
         >
           <q-item-section avatar>
             <i
@@ -125,14 +121,22 @@
 <style lang="scss"></style>
 
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, onMounted, ref, watch } from 'vue';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { firebaseKey } from '../authorization/firebaseKey';
 import { IMenuSettings } from '../interfaces';
+import { useRoute } from 'vue-router';
 
 const leftDrawerOpen = ref(false);
-const link = ref('/');
+const activeLink = ref('');
+const route = useRoute();
+const isActive = (routePath: string) => route.path === routePath;
+
+const handleClick = (routePath: string) => {
+  activeLink.value = routePath;
+};
+
 const firebaseApp = initializeApp(firebaseKey);
 const db = getFirestore(firebaseApp);
 const todos = ref<IMenuSettings[]>();
@@ -166,6 +170,21 @@ onBeforeMount(async () => {
   todos.value = await fetchTodos();
   // TODO - Convert to class structure with function call.
 });
+
+onMounted(() => {
+  const storedActiveLink = sessionStorage.getItem('activeLink');
+  if (storedActiveLink) {
+    activeLink.value = storedActiveLink;
+  }
+});
+
+watch(
+  () => route.path,
+  (newPath: string) => {
+    activeLink.value = newPath;
+    sessionStorage.setItem('activeLink', newPath);
+  }
+);
 
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
