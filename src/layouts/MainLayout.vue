@@ -2,7 +2,7 @@
   <q-layout view="lHh lpr lfr">
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
+        <q-btn dense flat round icon="menu" @click="toggleNavigationMenu" />
 
         <q-toolbar-title>
           <q-avatar>
@@ -13,7 +13,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
+    <q-drawer show-if-above v-model="navigationMenu" side="left" bordered>
       <q-list padding class="text-primary">
         <q-item
           clickable
@@ -128,7 +128,7 @@ import { firebaseKey } from '../authorization/firebaseKey';
 import { IMenuSettings } from '../interfaces';
 import { useRoute } from 'vue-router';
 
-const leftDrawerOpen = ref(false);
+const navigationMenu = ref(false);
 const activeLink = ref('');
 const route = useRoute();
 const isActive = (routePath: string) => route.path === routePath;
@@ -186,7 +186,7 @@ watch(
   }
 );
 
-const toggleLeftDrawer = () => {
-  leftDrawerOpen.value = !leftDrawerOpen.value;
+const toggleNavigationMenu = () => {
+  navigationMenu.value = !navigationMenu.value;
 };
 </script>

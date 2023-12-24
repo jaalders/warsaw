@@ -80,8 +80,8 @@ import { IMenuResponse, IMenuSettings } from '../interfaces';
 
 const emit = defineEmits(['fetchedMenuList']);
 const menuList = ref<IMenuSettings[]>();
-const selectMenuDialog = ref(false);
 const menuSettings = ref<IMenuSettings>();
+const selectMenuDialog = ref(false);
 
 async function getMenuList(): Promise<IMenuSettings[]> {
   try {
