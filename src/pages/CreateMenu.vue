@@ -8,6 +8,8 @@
           <q-btn @click="incrementColumns" label="Increase Columns" />
         </div>
 
+        <SingularLeft />
+
         <div class="q-mt-md">
           <div v-for="index in selectedColumns" :key="index" class="q-pa-md">
             Column {{ index }}
@@ -44,6 +46,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { DraggableItem } from '../interfaces';
+import SingularLeft from '../components/MenuBlocks/SingularLeft.vue';
 
 const items = ref<DraggableItem[]>([]);
 let offsetX = 0;
@@ -51,7 +54,6 @@ let offsetY = 0;
 const gridSize = 50;
 
 const selectedColumns = ref(1);
-
 const rightDrawerOpen = ref(false);
 
 const toggleRightDrawer = () => {
