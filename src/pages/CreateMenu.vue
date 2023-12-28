@@ -8,6 +8,8 @@
           <q-btn @click="incrementColumns" label="Increase Columns" />
         </div>
 
+        
+
         <SingularLeft />
 
         <div class="q-mt-md">
