@@ -27,7 +27,7 @@
       />
       <div class="product-details">
         <p>{{ title }}</p>
-        <p style="float: right">${{ price }}.000000</p>
+        <p class="float-right">{{ price }}</p>
         <p>{{ description }}</p>
         <div class="enhancements">
           <div
@@ -36,7 +36,7 @@
             class="enhancement"
           >
             <div class="enhancement-details">
-              <div>
+              <div style="line-break: anywhere">
                 <span class="item">{{ enhancement.name }}</span>
                 <span class="price">{{ enhancement.price }}</span>
               </div>
@@ -45,9 +45,11 @@
           <hr class="enhancement-separator" />
           <p class="calories">Calories: {{ calories }}</p>
           <div class="labels">
-            <span v-for="(label, index) in labels" :key="index" class="label">
-              {{ label }}
-            </span>
+            <div style="line-break: anywhere">
+              <span v-for="(label, index) in labels" :key="index" class="label">
+                {{ label }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -72,8 +74,6 @@ const enhancements = ref([
   { name: 'Cheese', price: 1.0 },
   { name: 'Gluten-Free Bun really really really long text', price: 2.0 },
 ]);
-
-const isNew = ref(false);
 </script>
 
 <style scoped lang="scss">
@@ -102,13 +102,9 @@ const isNew = ref(false);
   font-size: 0.75rem;
 }
 
-.product-body {
-  display: flex;
-}
-
-.product-details {
-  margin-left: 1rem;
-}
+// .product-details {
+//   margin-left: 1rem;
+// }
 
 .labels,
 .calories,
@@ -123,6 +119,7 @@ const isNew = ref(false);
   border-radius: 0.75rem;
   margin-right: 0.5rem;
   font-size: 0.75rem;
+  white-space: nowrap;
 }
 
 .enhancement {
@@ -131,6 +128,10 @@ const isNew = ref(false);
 
 .enhancement-details > div {
   display: flex;
+}
+
+.labels::before {
+  content: '\a';
 }
 
 .price {

@@ -3,14 +3,20 @@
     <q-page-container>
       <q-page>
         <div class="q-mb-md">
-          <q-btn @click="toggleRightDrawer" icon="menu" class="q-ma-md" />
-          <q-btn @click="decrementColumns" label="Decrease Columns" />
-          <q-btn @click="incrementColumns" label="Increase Columns" />
+          <div class="row">
+            <q-btn @click="toggleRightDrawer" icon="menu" class="q-ma-md" />
+            <q-btn @click="decrementColumns" label="Decrease Columns" />
+            <q-btn @click="incrementColumns" label="Increase Columns" />
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <MenuItem />
+            </div>
+            <div class="col-3"></div>
+            <div class="col-3"></div>
+            <div class="col-3"></div>
+          </div>
         </div>
-
-        
-
-        <SingularLeft />
 
         <div class="q-mt-md">
           <div v-for="index in selectedColumns" :key="index" class="q-pa-md">
@@ -48,7 +54,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { DraggableItem } from '../interfaces';
-import SingularLeft from '../components/MenuBlocks/SingularLeft.vue';
+import MenuItem from '../components/MenuBlocks/MenuItem.vue';
 
 const items = ref<DraggableItem[]>([]);
 let offsetX = 0;
