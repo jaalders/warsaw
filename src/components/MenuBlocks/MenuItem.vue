@@ -1,22 +1,14 @@
 <!-- 
   designs items to keep in mind 
-  - name of product
-  - price right beside it
-  - descriptions
-  - labels for gluten free/vegan etc if applicable
-  - calories for item if applicable.
+
   - item additions (bacon, cheese, etc)
   - is this a new item. (top corner) - TODO
 -->
 
 <template>
   <div class="product-card">
-    <!-- <div class="product-header">
-      <div class="new-item" v-if="isNew">
-        <span class="new-label">New</span>
-      </div>
-    </div> -->
     <div class="product-body">
+      <!-- TODO - Add is new product option -->
       <img
         :src="imageUrl"
         :class="{
@@ -60,6 +52,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
+//const isNew = ref(true);
 const title = ref('Product Title');
 const description = ref(
   'Here is a product description with a long amount of text to showcase the bits of the dish'
@@ -83,12 +76,6 @@ const enhancements = ref([
   margin: 1rem;
 }
 
-.product-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .new-item {
   background-color: #4caf50;
   color: white;
@@ -97,14 +84,6 @@ const enhancements = ref([
   display: flex;
   align-items: center;
 }
-
-.new-label {
-  font-size: 0.75rem;
-}
-
-// .product-details {
-//   margin-left: 1rem;
-// }
 
 .labels,
 .calories,
@@ -120,6 +99,9 @@ const enhancements = ref([
   margin-right: 0.5rem;
   font-size: 0.75rem;
   white-space: nowrap;
+  display: inline-block;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
 }
 
 .enhancement {
@@ -128,10 +110,6 @@ const enhancements = ref([
 
 .enhancement-details > div {
   display: flex;
-}
-
-.labels::before {
-  content: '\a';
 }
 
 .price {

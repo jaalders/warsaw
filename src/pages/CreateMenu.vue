@@ -5,11 +5,11 @@
         <div class="q-mb-md">
           <div class="row">
             <q-btn @click="toggleRightDrawer" icon="menu" class="q-ma-md" />
-            <q-btn @click="decrementColumns" label="Decrease Columns" />
-            <q-btn @click="incrementColumns" label="Increase Columns" />
+            <q-btn @click="decreaseRows" label="Decrease Rows" />
+            <q-btn @click="increaseRows" label="Increase Rows" />
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-3">
               <MenuItem />
             </div>
             <div class="col-3"></div>
@@ -68,14 +68,14 @@ const toggleRightDrawer = () => {
   rightDrawerOpen.value = !rightDrawerOpen.value;
 };
 
-const incrementColumns = () => {
+const increaseRows = () => {
   if (selectedColumns.value >= 12) {
     return;
   }
   selectedColumns.value += 1;
 };
 
-const decrementColumns = () => {
+const decreaseRows = () => {
   if (selectedColumns.value <= 1) {
     return;
   }
