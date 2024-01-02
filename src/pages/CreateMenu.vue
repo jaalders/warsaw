@@ -9,7 +9,7 @@
             <q-btn @click="increaseRows" label="Increase Rows" />
           </div>
           <div class="row">
-            <div class="col-3">
+            <div class="col-6">
               <MenuItem />
             </div>
             <div class="col-3"></div>

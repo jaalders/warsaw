@@ -2,13 +2,12 @@
   designs items to keep in mind 
 
   - item additions (bacon, cheese, etc)
-  - is this a new item. (top corner) - TODO
 -->
 
 <template>
-  <div class="product-card">
-    <div class="product-body">
-      <!-- TODO - Add is new product option -->
+  <div class="product__card">
+    <div class="product__body">
+      <!-- TODO: - Add is new product option -->
       <img
         :src="imageUrl"
         :class="{
@@ -17,29 +16,34 @@
         }"
         alt="Product Image"
       />
-      <div class="product-details">
-        <p>{{ title }}</p>
-        <p class="float-right">{{ price }}</p>
+      <div>
+        <!-- TODO: fix this inline styling -->
+        <p style="display: inline-block">{{ title }}</p>
+        <p style="display: inline-block; float: right">{{ price }}</p>
         <p>{{ description }}</p>
-        <div class="enhancements">
+        <div class="menu__item__enhancements">
           <div
-            v-for="(enhancement, index) in enhancements"
+            v-for="(enhancement, index) in menuItemEnhancements"
             :key="index"
             class="enhancement"
           >
-            <div class="enhancement-details">
+            <div class="enhancement__details">
               <div style="line-break: anywhere">
                 <span class="item">{{ enhancement.name }}</span>
                 <span class="price">{{ enhancement.price }}</span>
               </div>
             </div>
           </div>
-          <hr class="enhancement-separator" />
+          <hr />
           <p class="calories">Calories: {{ calories }}</p>
           <div class="labels">
             <div style="line-break: anywhere">
-              <span v-for="(label, index) in labels" :key="index" class="label">
-                {{ label }}
+              <span
+                v-for="(option, index) in dietaryOptions"
+                :key="index"
+                class="dietary__options"
+              >
+                {{ option }}
               </span>
             </div>
           </div>
@@ -47,30 +51,77 @@
       </div>
     </div>
   </div>
+
+  <div class="menu__form" v-if="showMenuSetup">
+    <q-form class="q-gutter-md">
+      <div class="q-pa-md">
+        <q-input filled v-model="text" label="Item Name" />
+        <q-input filled v-model="text" label="Item Description" />
+        <q-input filled v-model="text" label="Item Price" />
+        <q-input filled v-model="text" label="Calories" />
+        <!-- <q-checkbox v-model="text" />  -->
+        <!-- TODO: add new product toggle -->
+
+        <q-input
+          v-model="newMenuProductOption"
+          @keyup.enter="addMenuProductOption"
+          class="col"
+          square
+          filled
+          placeholder="Add Menu Product Option"
+          dense
+        >
+          <template v-slot:append>
+            <q-btn @click="addMenuProductOption" round dense flat icon="add" />
+          </template>
+        </q-input>
+
+        <q-list class="bg-white" separator bordered>
+          <q-item
+            v-for="(option, index) in menuProductOptions"
+            :key="option.title"
+            @click="option.done = !option.done"
+            clickable
+            v-ripple
+          >
+            <q-item-section avatar>
+              <q-checkbox
+                v-model="option.done"
+                class="no-pointer-events"
+                color="primary"
+              />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ option.title }}</q-item-label>
+            </q-item-section>
+            <q-item-section v-if="option.done" side>
+              <q-btn
+                @click.stop="deleteMenuProductOption(index)"
+                flat
+                round
+                dense
+                color="primary"
+                icon="delete"
+              />
+            </q-item-section>
+          </q-item>
+        </q-list>
+
+        <q-btn label="Submit" type="submit" color="primary" />
+        <q-btn
+          label="Reset"
+          type="reset"
+          color="primary"
+          flat
+          class="q-ml-sm"
+        />
+      </div>
+    </q-form>
+  </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-
-//const isNew = ref(true);
-const title = ref('Product Title');
-const description = ref(
-  'Here is a product description with a long amount of text to showcase the bits of the dish'
-);
-const imageUrl = ref('https://placehold.co/100x100');
-const imagePosition = ref('top-right');
-const labels = ref(['Vegetarian', 'Vegan', 'Gluten Free', 'Keto Friendly']);
-const calories = ref(500);
-const price = ref(17);
-const enhancements = ref([
-  { name: 'Bacon', price: 1.0 },
-  { name: 'Cheese', price: 1.0 },
-  { name: 'Gluten-Free Bun really really really long text', price: 2.0 },
-]);
-</script>
-
 <style scoped lang="scss">
-.product-card {
+.product__card {
   border: 1px solid #ccc;
   padding: 1rem;
   margin: 1rem;
@@ -87,11 +138,11 @@ const enhancements = ref([
 
 .labels,
 .calories,
-.enhancements {
+.menu__item__enhancements {
   margin-top: 0.5rem;
 }
 
-.label {
+.dietary__options {
   background-color: #2196f3;
   color: white;
   padding: 0.25rem 0.5rem;
@@ -108,7 +159,7 @@ const enhancements = ref([
   margin-bottom: 0.25rem;
 }
 
-.enhancement-details > div {
+.enhancement__details > div {
   display: flex;
 }
 
@@ -133,3 +184,46 @@ const enhancements = ref([
   margin: 1rem 0.4rem 0 0.4rem;
 }
 </style>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const title = ref('Product Title');
+const description = ref(
+  'Here is a product description with a long amount of text to showcase the bits of the dish'
+);
+
+const newMenuProductOption = ref('');
+const menuProductOptions = ref([{}]);
+const text = ref('');
+const imageUrl = ref('https://placehold.co/100x100');
+const imagePosition = ref('top-right');
+const dietaryOptions = ref([
+  'Vegan',
+  'Gluten Free',
+  'Keto',
+  'Dairy Free',
+  'Paleo',
+  'Nut Free',
+]);
+const calories = ref(500);
+const price = ref(17);
+const menuItemEnhancements = ref([
+  { name: 'Bacon', price: 1.0 },
+  { name: 'Cheese', price: 1.0 },
+  { name: 'Gluten-Free Bun really really really long text', price: 2.0 },
+]);
+const showMenuSetup = ref(true);
+
+const addMenuProductOption = () => {
+  menuProductOptions.value.push({
+    title: newMenuProductOption.value,
+    done: false,
+  });
+  menuProductOptions.value[0] = '';
+};
+
+const deleteMenuProductOption = (index: number) => {
+  menuProductOptions.value.splice(index, 1);
+};
+</script>
