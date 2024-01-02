@@ -1,9 +1,3 @@
-<!-- 
-  designs items to keep in mind 
-
-  - item additions (bacon, cheese, etc)
--->
-
 <template>
   <div class="product__card">
     <div class="product__body">
@@ -76,25 +70,20 @@
           </template>
         </q-input>
 
-        <q-list class="bg-white" separator bordered>
+        <q-list separator bordered>
           <q-item
             v-for="(option, index) in menuProductOptions"
-            :key="option.title"
-            @click="option.done = !option.done"
+            :key="option.name"
+            @click="option.added = !option.added"
             clickable
             v-ripple
           >
             <q-item-section avatar>
               <q-checkbox
-                v-model="option.done"
+                v-model="option.added"
                 class="no-pointer-events"
                 color="primary"
               />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{ option.title }}</q-item-label>
-            </q-item-section>
-            <q-item-section v-if="option.done" side>
               <q-btn
                 @click.stop="deleteMenuProductOption(index)"
                 flat
@@ -103,6 +92,9 @@
                 color="primary"
                 icon="delete"
               />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ option.name }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -187,14 +179,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { IMenuItemAdditions } from '../../interfaces/menus';
 
 const title = ref('Product Title');
 const description = ref(
   'Here is a product description with a long amount of text to showcase the bits of the dish'
 );
 
+const newMenuProductionOptionPrice = ref(0);
 const newMenuProductOption = ref('');
-const menuProductOptions = ref([{}]);
+const menuProductOptions = ref<IMenuItemAdditions[]>([]);
 const text = ref('');
 const imageUrl = ref('https://placehold.co/100x100');
 const imagePosition = ref('top-right');
@@ -217,10 +211,11 @@ const showMenuSetup = ref(true);
 
 const addMenuProductOption = () => {
   menuProductOptions.value.push({
-    title: newMenuProductOption.value,
-    done: false,
+    name: newMenuProductOption.value,
+    price: newMenuProductionOptionPrice.value,
+    added: true,
   });
-  menuProductOptions.value[0] = '';
+  newMenuProductOption.value = '';
 };
 
 const deleteMenuProductOption = (index: number) => {

@@ -7,3 +7,9 @@ export interface IMenuSettings {
   name: string;
   description?: string;
 }
+
+export interface IMenuItemAdditions {
+  name: string;
+  price: number;
+  added: boolean;
+}
