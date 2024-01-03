@@ -198,17 +198,21 @@
 </style>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref, watch } from 'vue';
 import { IMenuItemAdditions } from '../../interfaces/menus';
 
 const props = defineProps<{
   showMenuItemAdditionsScreen: boolean;
 }>();
 
+const emit = defineEmits(['showMenuItemAdditionsScreen']);
+
 const title = ref('Product Title');
 const description = ref(
   'Here is a product description with a long amount of text to showcase the bits of the dish'
 );
+
+const showMenuSetup = ref(false);
 
 const newMenuProductionOptionPrice = ref(0);
 const newMenuProductOption = ref('');
@@ -245,5 +249,11 @@ const deleteMenuProductOption = (index: number) => {
   menuProductOptions.value.splice(index, 1);
 };
 
-const showMenuSetup = computed(() => props.showMenuItemAdditionsScreen);
+watch(
+  () => props.showMenuItemAdditionsScreen,
+  () => {
+    showMenuSetup.value = !showMenuSetup.value;
+    emit('showMenuItemAdditionsScreen', showMenuSetup.value);
+  }
+);
 </script>

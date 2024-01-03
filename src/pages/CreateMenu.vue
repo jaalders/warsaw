@@ -14,7 +14,10 @@
           </div>
           <div class="row">
             <div class="col-6">
-              <MenuItem :showMenuItemAdditionsScreen="showMenuItemAdditionsScreen" />
+              <MenuItem
+                :showMenuItemAdditionsScreen="showMenuItemAdditionsScreen"
+                @show-menu-item-additions-screen="!showMenuItemAdditionsScreen"
+              />
             </div>
             <div class="col-3"></div>
             <div class="col-3"></div>
