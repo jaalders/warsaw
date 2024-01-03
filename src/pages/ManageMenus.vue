@@ -11,7 +11,7 @@
     <div class="q-pa-md">
       <div class="text-body1">Configure Menu Dates:</div>
       <div class="border q-card--bordered">
-        <q-dialog v-model="selectMenuDialog">
+        <q-dialog v-if="selectMenuDialog">
           <q-card style="width: 700px; max-width: 80vw">
             <q-card-section>
               <div class="text-h6">selectMenuDialog</div>

@@ -1,3 +1,4 @@
+<!-- TODO: add "chef's special" focusing menu item -->
 <template>
   <div class="product__card">
     <div class="product__body">
@@ -46,70 +47,89 @@
     </div>
   </div>
 
-  <div class="menu__form" v-if="showMenuSetup">
-    <q-form class="q-gutter-md">
-      <div class="q-pa-md">
-        <q-input filled v-model="text" label="Item Name" />
-        <q-input filled v-model="text" label="Item Description" />
-        <q-input filled v-model="text" label="Item Price" />
-        <q-input filled v-model="text" label="Calories" />
-        <!-- <q-checkbox v-model="text" />  -->
-        <!-- TODO: add new product toggle -->
+  <q-dialog v-model="showMenuSetup">
+    <q-card style="width: 700px; max-width: 80vw">
+      <div class="menu__form">
+        <q-form class="q-gutter-md">
+          <div class="q-pa-md">
+            <q-input filled v-model="text" label="Menu Item Name" />
+            <q-input filled v-model="text" label="Menu Item Description" />
+            <q-input filled v-model="text" label="Menu Item Price" />
+            <q-input filled v-model="text" label="Calories" />
+            <!-- <q-checkbox v-model="text" />  -->
+            <!-- TODO: add new product toggle -->
 
-        <q-input
-          v-model="newMenuProductOption"
-          @keyup.enter="addMenuProductOption"
-          class="col"
-          square
-          filled
-          placeholder="Add Menu Product Option"
-          dense
-        >
-          <template v-slot:append>
-            <q-btn @click="addMenuProductOption" round dense flat icon="add" />
-          </template>
-        </q-input>
+            <q-input
+              v-model="newMenuProductOption"
+              class="col"
+              square
+              filled
+              placeholder="Add Menu Option Name"
+              dense
+            >
+            </q-input>
+            <q-input
+              v-model="newMenuProductionOptionPrice"
+              class="col"
+              square
+              filled
+              placeholder="Add Menu Product Price"
+              dense
+            >
+              <template v-slot:append>
+                <q-btn
+                  @click="addMenuProductOption"
+                  round
+                  dense
+                  flat
+                  :disable="!newMenuProductOption"
+                  icon="add"
+                />
+              </template>
+            </q-input>
 
-        <q-list separator bordered>
-          <q-item
-            v-for="(option, index) in menuProductOptions"
-            :key="option.name"
-            @click="option.added = !option.added"
-            clickable
-            v-ripple
-          >
-            <q-item-section avatar>
-              <q-checkbox
-                v-model="option.added"
-                class="no-pointer-events"
-                color="primary"
-              />
-              <q-btn
-                @click.stop="deleteMenuProductOption(index)"
-                flat
-                round
-                dense
-                color="primary"
-                icon="delete"
-              />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{ option.name }}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
+            <q-list separator bordered>
+              <q-item
+                v-for="(option, index) in menuProductOptions"
+                :key="option.name"
+                @click="option.added = !option.added"
+                clickable
+                v-ripple
+              >
+                <q-item-section avatar>
+                  <q-checkbox
+                    v-model="option.added"
+                    class="no-pointer-events"
+                    color="primary"
+                  />
+                </q-item-section>
 
-        <q-btn label="Submit" type="submit" color="primary" />
-        <q-btn
-          label="Reset"
-          type="reset"
-          color="primary"
-          flat
-          class="q-ml-sm"
-        />
+                <q-item-section>
+                  <q-item-label>{{ option.name }}</q-item-label>
+                </q-item-section>
+                <q-btn
+                  @click.stop="deleteMenuProductOption(index)"
+                  flat
+                  round
+                  color="primary"
+                  icon="delete"
+                />
+              </q-item>
+            </q-list>
+
+            <q-btn label="Submit" type="submit" color="primary" />
+            <q-btn
+              label="Reset"
+              type="reset"
+              color="primary"
+              flat
+              class="q-ml-sm"
+            />
+          </div>
+        </q-form>
       </div>
-    </q-form>
-  </div>
+    </q-card>
+  </q-dialog>
 </template>
 
 <style scoped lang="scss">
@@ -178,8 +198,12 @@
 </style>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { IMenuItemAdditions } from '../../interfaces/menus';
+
+const props = defineProps<{
+  showMenuItemAdditionsScreen: boolean;
+}>();
 
 const title = ref('Product Title');
 const description = ref(
@@ -207,7 +231,6 @@ const menuItemEnhancements = ref([
   { name: 'Cheese', price: 1.0 },
   { name: 'Gluten-Free Bun really really really long text', price: 2.0 },
 ]);
-const showMenuSetup = ref(true);
 
 const addMenuProductOption = () => {
   menuProductOptions.value.push({
@@ -221,4 +244,6 @@ const addMenuProductOption = () => {
 const deleteMenuProductOption = (index: number) => {
   menuProductOptions.value.splice(index, 1);
 };
+
+const showMenuSetup = computed(() => props.showMenuItemAdditionsScreen);
 </script>

@@ -7,10 +7,14 @@
             <q-btn @click="toggleRightDrawer" icon="menu" class="q-ma-md" />
             <q-btn @click="decreaseRows" label="Decrease Rows" />
             <q-btn @click="increaseRows" label="Increase Rows" />
+            <q-btn
+              @click="toggleMenuItemAdditionsScreen"
+              label="Show Menu Item Additions Screen"
+            />
           </div>
           <div class="row">
             <div class="col-6">
-              <MenuItem />
+              <MenuItem :showMenuItemAdditionsScreen="showMenuItemAdditionsScreen" />
             </div>
             <div class="col-3"></div>
             <div class="col-3"></div>
@@ -59,10 +63,11 @@ import MenuItem from '../components/MenuBlocks/MenuItem.vue';
 const items = ref<DraggableItem[]>([]);
 let offsetX = 0;
 let offsetY = 0;
-const gridSize = 50;
 
+const gridSize = 50;
 const selectedColumns = ref(1);
 const rightDrawerOpen = ref(false);
+const showMenuItemAdditionsScreen = ref(false);
 
 const toggleRightDrawer = () => {
   rightDrawerOpen.value = !rightDrawerOpen.value;
@@ -106,6 +111,10 @@ const stopDragging = (index: number) => {
 
 const snapToGrid = (value: number, gridSize: number) => {
   return Math.round(value / gridSize) * gridSize;
+};
+
+const toggleMenuItemAdditionsScreen = () => {
+  showMenuItemAdditionsScreen.value = !showMenuItemAdditionsScreen.value;
 };
 
 onMounted(() => {
