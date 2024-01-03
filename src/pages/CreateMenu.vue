@@ -8,15 +8,15 @@
             <q-btn @click="decreaseRows" label="Decrease Rows" />
             <q-btn @click="increaseRows" label="Increase Rows" />
             <q-btn
-              @click="toggleMenuItemAdditionsScreen"
-              label="Show Menu Item Additions Screen"
+              @click="openMenuItemsModal"
+              label="Open Menu Items Additions"
             />
           </div>
           <div class="row">
             <div class="col-6">
               <MenuItem
-                :showMenuItemAdditionsScreen="showMenuItemAdditionsScreen"
-                @show-menu-item-additions-screen="!showMenuItemAdditionsScreen"
+                :openMenuItemAddtionsModal="openMenuItemAddtionsModal"
+                @closeMenuItemAdditionsModal="handlecloseMenuItemAdditionsModal"
               />
             </div>
             <div class="col-3"></div>
@@ -70,7 +70,15 @@ let offsetY = 0;
 const gridSize = 50;
 const selectedColumns = ref(1);
 const rightDrawerOpen = ref(false);
-const showMenuItemAdditionsScreen = ref(false);
+const openMenuItemAddtionsModal = ref(false);
+
+const openMenuItemsModal = () => {
+  openMenuItemAddtionsModal.value = true;
+};
+
+const handlecloseMenuItemAdditionsModal = () => {
+  openMenuItemAddtionsModal.value = !openMenuItemAddtionsModal.value;
+};
 
 const toggleRightDrawer = () => {
   rightDrawerOpen.value = !rightDrawerOpen.value;
@@ -114,10 +122,6 @@ const stopDragging = (index: number) => {
 
 const snapToGrid = (value: number, gridSize: number) => {
   return Math.round(value / gridSize) * gridSize;
-};
-
-const toggleMenuItemAdditionsScreen = () => {
-  showMenuItemAdditionsScreen.value = !showMenuItemAdditionsScreen.value;
 };
 
 onMounted(() => {

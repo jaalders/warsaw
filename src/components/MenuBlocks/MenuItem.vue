@@ -47,7 +47,7 @@
     </div>
   </div>
 
-  <q-dialog v-model="showMenuSetup">
+  <q-dialog v-model="isOpen" @hide="closeMenuItemAdditionsModal">
     <q-card style="width: 700px; max-width: 80vw">
       <div class="menu__form">
         <q-form class="q-gutter-md">
@@ -201,18 +201,15 @@
 import { ref, watch } from 'vue';
 import { IMenuItemAdditions } from '../../interfaces/menus';
 
-const props = defineProps<{
-  showMenuItemAdditionsScreen: boolean;
-}>();
+const props = defineProps(['openMenuItemAddtionsModal']);
+const emits = defineEmits(['closeMenuItemAdditionsModal']);
 
-const emit = defineEmits(['showMenuItemAdditionsScreen']);
+const isOpen = ref(false);
 
 const title = ref('Product Title');
 const description = ref(
   'Here is a product description with a long amount of text to showcase the bits of the dish'
 );
-
-const showMenuSetup = ref(false);
 
 const newMenuProductionOptionPrice = ref(0);
 const newMenuProductOption = ref('');
@@ -236,6 +233,13 @@ const menuItemEnhancements = ref([
   { name: 'Gluten-Free Bun really really really long text', price: 2.0 },
 ]);
 
+watch(
+  () => props.openMenuItemAddtionsModal,
+  (newValue: boolean) => {
+    isOpen.value = newValue;
+  }
+);
+
 const addMenuProductOption = () => {
   menuProductOptions.value.push({
     name: newMenuProductOption.value,
@@ -249,11 +253,8 @@ const deleteMenuProductOption = (index: number) => {
   menuProductOptions.value.splice(index, 1);
 };
 
-watch(
-  () => props.showMenuItemAdditionsScreen,
-  () => {
-    showMenuSetup.value = !showMenuSetup.value;
-    emit('showMenuItemAdditionsScreen', showMenuSetup.value);
-  }
-);
+const closeMenuItemAdditionsModal = () => {
+  isOpen.value = false;
+  emits('closeMenuItemAdditionsModal', false);
+};
 </script>
