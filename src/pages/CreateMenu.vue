@@ -61,7 +61,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { DraggableItem } from '../interfaces';
-import MenuItem from '../components/MenuBlocks/MenuItem.vue';
+import MenuItem from '../components/MenuComponents/MenuItem.vue';
 
 const items = ref<DraggableItem[]>([]);
 let offsetX = 0;
