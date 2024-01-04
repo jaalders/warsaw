@@ -201,11 +201,18 @@
 import { ref, watch } from 'vue';
 import { IMenuItemAdditions } from '../../interfaces/menus';
 
-const props = defineProps(['openMenuItemAddtionsModal']);
-const emits = defineEmits(['closeMenuItemAdditionsModal']);
+const props = defineProps({
+  openMenuItemAddtionsModal: {
+    type: Boolean,
+    required: false,
+  },
+});
+
+const emits = defineEmits<{
+  closeMenuItemAdditionsModal: [boolean];
+}>();
 
 const isOpen = ref(false);
-
 const title = ref('Product Title');
 const description = ref(
   'Here is a product description with a long amount of text to showcase the bits of the dish'
