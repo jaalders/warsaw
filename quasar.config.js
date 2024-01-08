@@ -75,8 +75,9 @@ module.exports = configure(function (ctx) {
       // https://v2.quasar.dev/quasar-cli-webpack/handling-webpack
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
       chainWebpack(chain) {
-        chain.plugin('define-ui').use(webpack.DefinePlugin, [
+        chain.plugin().use(webpack.DefinePlugin, [
           {
+            __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
             __UI_VERSION__: `'${
               require('@quasar/quasar-ui-qcalendar/package.json').version
             }'`,

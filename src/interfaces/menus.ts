@@ -13,3 +13,20 @@ export interface IMenuItemAdditions {
   price: number;
   added: boolean;
 }
+
+export interface IMenuItem {
+  id: number;
+  image: string;
+  title: string;
+  description: string;
+  price: number;
+  calories?: number;
+  itemAdditions?: IMenuItemAdditions[];
+  dietaryOptions?: IMenuDietaryOptions[];
+}
+
+export interface IMenuDietaryOptions {
+  id: number;
+  name: string;
+  price: number;
+}

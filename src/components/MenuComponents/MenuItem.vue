@@ -4,7 +4,7 @@
     <div class="product__body">
       <!-- TODO: - Add is new product option -->
       <img
-        :src="imageUrl"
+        :src="menuItem.image"
         :class="{
           'top-left': imagePosition === 'top-left',
           'top-right': imagePosition === 'top-right',
@@ -14,8 +14,8 @@
       <div>
         <!-- TODO: fix this inline styling -->
         <p style="display: inline-block">{{ title }}</p>
-        <p style="display: inline-block; float: right">{{ price }}</p>
-        <p>{{ description }}</p>
+        <p style="display: inline-block; float: right">{{ menuItem.price }}</p>
+        <p>{{ menuItem.description }}</p>
         <div class="menu__item__enhancements">
           <div
             v-for="(enhancement, index) in menuItemEnhancements"
@@ -30,7 +30,7 @@
             </div>
           </div>
           <hr />
-          <p class="calories">Calories: {{ calories }}</p>
+          <p class="calories">Calories: {{ menuItem.calories }}</p>
           <div class="labels">
             <div style="line-break: anywhere">
               <span
@@ -59,8 +59,9 @@
             <!-- <q-checkbox v-model="text" />  -->
             <!-- TODO: add new product toggle -->
 
+            <!-- fix this to bind to vmodel same with price -->
             <q-input
-              v-model="newMenuProductOption"
+              v-model="menuItem.description"
               class="col"
               square
               filled
@@ -69,7 +70,7 @@
             >
             </q-input>
             <q-input
-              v-model="newMenuProductionOptionPrice"
+              v-model="menuItem.price"
               class="col"
               square
               filled
@@ -199,7 +200,10 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { IMenuItemAdditions } from '../../interfaces/menus';
+import {
+  IMenuDietaryOptions,
+  IMenuItemAdditions,
+} from '../../interfaces/menus';
 
 const props = defineProps({
   openMenuItemAddtionsModal: {
@@ -212,17 +216,26 @@ const emits = defineEmits<{
   closeMenuItemAdditionsModal: [boolean];
 }>();
 
+const menuItem = ref({
+  id: 1,
+  image: 'https://placehold.co/100x100',
+  title: 'Product Title',
+  description:
+    'Here is a product description with a long amount of text to showcase the bits of the dish',
+  price: 17,
+  calories: 500,
+  itemAdditions: <IMenuItemAdditions[]>[],
+  dietaryOptions: <IMenuDietaryOptions[]>[],
+});
+
 const isOpen = ref(false);
 const title = ref('Product Title');
-const description = ref(
-  'Here is a product description with a long amount of text to showcase the bits of the dish'
-);
 
 const newMenuProductionOptionPrice = ref(0);
 const newMenuProductOption = ref('');
-const menuProductOptions = ref<IMenuItemAdditions[]>([]);
+const menuProductOptions = ref();
+
 const text = ref('');
-const imageUrl = ref('https://placehold.co/100x100');
 const imagePosition = ref('top-right');
 const dietaryOptions = ref([
   'Vegan',
@@ -232,8 +245,7 @@ const dietaryOptions = ref([
   'Paleo',
   'Nut Free',
 ]);
-const calories = ref(500);
-const price = ref(17);
+
 const menuItemEnhancements = ref([
   { name: 'Bacon', price: 1.0 },
   { name: 'Cheese', price: 1.0 },
@@ -248,12 +260,13 @@ watch(
 );
 
 const addMenuProductOption = () => {
-  menuProductOptions.value.push({
+  menuItem.value.itemAdditions.push({
     name: newMenuProductOption.value,
     price: newMenuProductionOptionPrice.value,
     added: true,
   });
-  newMenuProductOption.value = '';
+
+  menuItem.value.itemAdditions = [];
 };
 
 const deleteMenuProductOption = (index: number) => {
