@@ -141,7 +141,7 @@ const firebaseApp = initializeApp(firebaseKey);
 const db = getFirestore(firebaseApp);
 const todos = ref<IMenuSettings[]>();
 
-async function fetchTodos(): Promise<IMenuSettings[]> {
+async function fetchTodos(): Promise<IMenuSettings[] | void> {
   try {
     // MULTIPLE EXAMPLE
     // const todosSnapshot = await getDocs(collection(db, 'todos'));
@@ -152,14 +152,11 @@ async function fetchTodos(): Promise<IMenuSettings[]> {
 
     // return todoData;
 
-    let todoData: IMenuSettings[];
     const todoSnapshot = await getDoc(doc(db, 'todos', 'HBC5lqP1jUUQpD8F5XkQ'));
 
-    todoData = todoSnapshot.exists()
+    todos.value = todoSnapshot.exists()
       ? [todoSnapshot.data() as IMenuSettings]
       : [];
-
-    return todoData;
   } catch (error) {
     console.error('Error fetching todos:', error);
     throw error;
@@ -167,7 +164,7 @@ async function fetchTodos(): Promise<IMenuSettings[]> {
 }
 
 onBeforeMount(async () => {
-  todos.value = await fetchTodos();
+  await fetchTodos();
   // TODO - Convert to class structure with function call.
 });
 

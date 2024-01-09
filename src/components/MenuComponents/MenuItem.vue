@@ -61,7 +61,7 @@
 
             <!-- fix this to bind to vmodel same with price -->
             <q-input
-              v-model="menuItem.description"
+              v-model="menuItem.dietaryOptions[0].name"
               class="col"
               square
               filled
@@ -225,7 +225,7 @@ const menuItem = ref({
   price: 17,
   calories: 500,
   itemAdditions: <IMenuItemAdditions[]>[],
-  dietaryOptions: <IMenuDietaryOptions[]>[],
+  dietaryOptions: <IMenuDietaryOptions[]>{},
 });
 
 const isOpen = ref(false);
