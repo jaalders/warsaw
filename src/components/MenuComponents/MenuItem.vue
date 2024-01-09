@@ -13,7 +13,7 @@
       />
       <div>
         <!-- TODO: fix this inline styling -->
-        <p style="display: inline-block">{{ title }}</p>
+        <p style="display: inline-block">{{ menuItem.title }}</p>
         <p style="display: inline-block; float: right">{{ menuItem.price }}</p>
         <p>{{ menuItem.description }}</p>
         <div class="menu__item__enhancements">
@@ -59,9 +59,9 @@
             <!-- <q-checkbox v-model="text" />  -->
             <!-- TODO: add new product toggle -->
 
-            <!-- fix this to bind to vmodel same with price -->
+            <!-- form need to push to the array not reference the object. -->
             <q-input
-              v-model="menuItem.dietaryOptions[0].name"
+              v-model="formItemAdditions.name"
               class="col"
               square
               filled
@@ -70,7 +70,7 @@
             >
             </q-input>
             <q-input
-              v-model="menuItem.price"
+              v-model="formItemAdditions.price"
               class="col"
               square
               filled
@@ -83,7 +83,7 @@
                   round
                   dense
                   flat
-                  :disable="!newMenuProductOption"
+                  :disable="!formItemAdditions.name"
                   icon="add"
                 />
               </template>
@@ -91,7 +91,7 @@
 
             <q-list separator bordered>
               <q-item
-                v-for="(option, index) in menuProductOptions"
+                v-for="(option, index) in itemAdditions"
                 :key="option.name"
                 @click="option.added = !option.added"
                 clickable
@@ -200,10 +200,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import {
-  IMenuDietaryOptions,
-  IMenuItemAdditions,
-} from '../../interfaces/menus';
+import { IMenuItem, IMenuItemAdditions } from '../../interfaces/menus';
 
 const props = defineProps({
   openMenuItemAddtionsModal: {
@@ -216,7 +213,9 @@ const emits = defineEmits<{
   closeMenuItemAdditionsModal: [boolean];
 }>();
 
-const menuItem = ref({
+const isOpen = ref(false);
+
+const menuItem = ref<IMenuItem>({
   id: 1,
   image: 'https://placehold.co/100x100',
   title: 'Product Title',
@@ -224,16 +223,17 @@ const menuItem = ref({
     'Here is a product description with a long amount of text to showcase the bits of the dish',
   price: 17,
   calories: 500,
-  itemAdditions: <IMenuItemAdditions[]>[],
-  dietaryOptions: <IMenuDietaryOptions[]>{},
+  itemAdditions: [],
+  dietaryOptions: [],
 });
 
-const isOpen = ref(false);
-const title = ref('Product Title');
+const formItemAdditions = ref({
+  name: '',
+  price: 0,
+  added: true,
+});
 
-const newMenuProductionOptionPrice = ref(0);
-const newMenuProductOption = ref('');
-const menuProductOptions = ref();
+const itemAdditions = ref<IMenuItemAdditions[]>([]);
 
 const text = ref('');
 const imagePosition = ref('top-right');
@@ -260,17 +260,17 @@ watch(
 );
 
 const addMenuProductOption = () => {
-  menuItem.value.itemAdditions.push({
-    name: newMenuProductOption.value,
-    price: newMenuProductionOptionPrice.value,
+  itemAdditions.value.push({
+    name: formItemAdditions.value.name,
+    price: formItemAdditions.value.price,
     added: true,
   });
 
-  menuItem.value.itemAdditions = [];
+  console.log(itemAdditions.value);
 };
 
 const deleteMenuProductOption = (index: number) => {
-  menuProductOptions.value.splice(index, 1);
+  itemAdditions.value.splice(index, 1);
 };
 
 const closeMenuItemAdditionsModal = () => {

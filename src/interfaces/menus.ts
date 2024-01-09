@@ -8,12 +8,6 @@ export interface IMenuSettings {
   description?: string;
 }
 
-export interface IMenuItemAdditions {
-  name: string;
-  price: number;
-  added: boolean;
-}
-
 export interface IMenuItem {
   id: number;
   image: string;
@@ -21,12 +15,17 @@ export interface IMenuItem {
   description: string;
   price: number;
   calories?: number;
-  itemAdditions?: IMenuItemAdditions[];
+  itemAdditions: IMenuItemAdditions[];
   dietaryOptions?: IMenuDietaryOptions[];
+}
+
+export interface IMenuItemAdditions {
+  name: string;
+  price: number;
+  added: boolean;
 }
 
 export interface IMenuDietaryOptions {
   id: number;
   name: string;
-  price: number;
 }
