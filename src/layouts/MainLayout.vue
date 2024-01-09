@@ -123,7 +123,13 @@
 <script setup lang="ts">
 import { onBeforeMount, onMounted, ref, watch } from 'vue';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  // getDocs,
+  // collection,
+} from 'firebase/firestore';
 import { firebaseKey } from '../authorization/firebaseKey';
 import { IMenuSettings } from '../interfaces';
 import { useRoute } from 'vue-router';
@@ -146,11 +152,11 @@ async function fetchTodos(): Promise<IMenuSettings[] | void> {
     // MULTIPLE EXAMPLE
     // const todosSnapshot = await getDocs(collection(db, 'todos'));
 
-    // const todoData = todosSnapshot.docs.map((doc) => {
-    //   return doc.data() as IFirebaseResponseStructure;
+    // todos.value = todosSnapshot.docs.map((doc) => {
+    //   return doc.data() as IMenuSettings;
     // });
 
-    // return todoData;
+    // return todos.value;
 
     const todoSnapshot = await getDoc(doc(db, 'todos', 'HBC5lqP1jUUQpD8F5XkQ'));
 
@@ -165,6 +171,7 @@ async function fetchTodos(): Promise<IMenuSettings[] | void> {
 
 onBeforeMount(async () => {
   await fetchTodos();
+  console.log(todos.value);
   // TODO - Convert to class structure with function call.
 });
 

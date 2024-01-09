@@ -118,7 +118,7 @@
               </q-item>
             </q-list>
 
-            <q-btn label="Submit" type="submit" color="primary" />
+            <q-btn label="Submit" type="button" color="primary" />
             <q-btn
               label="Reset"
               type="reset"
