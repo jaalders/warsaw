@@ -149,6 +149,8 @@ const todos = ref<IMenuSettings[]>();
 
 async function fetchTodos(): Promise<IMenuSettings[] | void> {
   try {
+    // TODO: implement firebase self-auth for single user.
+
     // MULTIPLE EXAMPLE
     // const todosSnapshot = await getDocs(collection(db, 'todos'));
 

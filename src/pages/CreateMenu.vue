@@ -7,10 +7,6 @@
             <q-btn @click="toggleRightDrawer" icon="menu" class="q-ma-md" />
             <q-btn @click="decreaseRows" label="Decrease Rows" />
             <q-btn @click="increaseRows" label="Increase Rows" />
-            <q-btn
-              @click="openMenuItemsModal"
-              label="Open Menu Items Additions"
-            />
           </div>
           <div class="row">
             <div class="col-6">
@@ -27,22 +23,31 @@
 
         <div class="q-mt-md">
           <div v-for="index in selectedColumns" :key="index" class="q-pa-md">
-            Column {{ index }}
+            <!-- DROPPABLE AREA -->
+            <div
+              @dragover.prevent
+              @drop="openMenuItemsModal"
+              :style="{
+                marginTop: '20px',
+                width: '400px',
+                height: '200px',
+                border: '2px solid #2ecc71',
+              }"
+            ></div>
           </div>
         </div>
       </q-page>
     </q-page-container>
 
     <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
-      <div
-        v-for="(item, index) in items"
-        :key="index"
-        class="draggable"
-        :style="{ transform: `translate(${item.x}px, ${item.y}px)` }"
-        @mousedown="startDragging(index, $event)"
-      >
-        Drag me {{ index + 1 }}!
-      </div>
+      <q-list q-list padding class="text-primary">
+        <q-item draggable="true">
+          <q-item-section>
+            <!-- DRAGGABLE AREA -->
+            <q-item-label> Standard Menu Item </q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
     </q-drawer>
   </q-layout>
 </template>
@@ -59,15 +64,9 @@
 </style>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { DraggableItem } from '../interfaces';
+import { ref } from 'vue';
 import MenuItem from '../components/MenuComponents/MenuItem.vue';
 
-const items = ref<DraggableItem[]>([]);
-let offsetX = 0;
-let offsetY = 0;
-
-const gridSize = 50;
 const selectedColumns = ref(1);
 const rightDrawerOpen = ref(false);
 const openMenuItemAddtionsModal = ref(false);
@@ -97,40 +96,4 @@ const decreaseRows = () => {
   }
   selectedColumns.value -= 1;
 };
-
-const startDragging = (index: number, e: MouseEvent) => {
-  items.value[index].isDragging = true;
-  offsetX = e.clientX - items.value[index].x;
-  offsetY = e.clientY - items.value[index].y;
-
-  window.addEventListener('mousemove', (ev) => handleDragging(ev, index));
-  window.addEventListener('mouseup', () => stopDragging(index));
-};
-
-const handleDragging = (e: MouseEvent, index: number) => {
-  if (items.value[index].isDragging) {
-    items.value[index].x = snapToGrid(e.clientX - offsetX, gridSize);
-    items.value[index].y = snapToGrid(e.clientY - offsetY, gridSize);
-  }
-};
-
-const stopDragging = (index: number) => {
-  items.value[index].isDragging = false;
-  window.removeEventListener('mousemove', (e) => handleDragging(e, index));
-  window.removeEventListener('mouseup', () => stopDragging(index));
-};
-
-const snapToGrid = (value: number, gridSize: number) => {
-  return Math.round(value / gridSize) * gridSize;
-};
-
-onMounted(() => {
-  for (let i = 0; i < 3; i++) {
-    items.value.push({
-      x: i * 150,
-      y: i * 100,
-      isDragging: false,
-    });
-  }
-});
 </script>
