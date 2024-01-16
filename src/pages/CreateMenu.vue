@@ -8,8 +8,8 @@
             <q-btn @click="decreaseRows" label="Decrease Rows" />
             <q-btn @click="increaseRows" label="Increase Rows" />
             <q-btn
-              @click="showComponent"
-              label="Show Component"
+              @click="openMenuItemsModal"
+              label="Show Modal"
               class="q-ma-md"
             />
           </div>
@@ -18,7 +18,6 @@
               <MenuItem
                 :openMenuItemAddtionsModal="openMenuItemAddtionsModal"
                 @closeMenuItemAdditionsModal="handlecloseMenuItemAdditionsModal"
-                v-if="isShow"
               />
             </div>
             <div class="col-3"></div>
@@ -76,7 +75,6 @@ const MenuItem = defineAsyncComponent(
 const selectedColumns = ref(1);
 const rightDrawerOpen = ref(false);
 const openMenuItemAddtionsModal = ref(false);
-const isShow = ref(false);
 
 const openMenuItemsModal = () => {
   openMenuItemAddtionsModal.value = true;
@@ -102,9 +100,5 @@ const decreaseRows = () => {
     return;
   }
   selectedColumns.value -= 1;
-};
-
-const showComponent = () => {
-  isShow.value = true;
 };
 </script>

@@ -3,17 +3,17 @@ export interface IMenuResponse {
 }
 
 export interface IMenuSettings {
-  id: number;
+  id?: number;
   name: string;
   description?: string;
 }
 
 export interface IMenuItem {
-  id: number;
+  id?: number;
   image: string;
   title: string;
   description: string;
-  price: number;
+  price?: number;
   calories?: number;
   itemAdditions: IMenuItemAdditions[];
   dietaryOptions?: IMenuDietaryOptions[];
@@ -21,11 +21,11 @@ export interface IMenuItem {
 
 export interface IMenuItemAdditions {
   name: string;
-  price: number;
+  price?: number;
   added: boolean;
 }
 
 export interface IMenuDietaryOptions {
-  id: number;
+  id?: number;
   name: string;
 }

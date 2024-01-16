@@ -50,44 +50,65 @@
   <q-dialog v-model="isOpen" @hide="closeMenuItemAdditionsModal">
     <q-card style="width: 700px; max-width: 80vw">
       <div class="menu__form">
-        <q-form class="q-gutter-md">
+        <q-form class="q-gutter-md" @submit="onSubmit" @reset="onReset">
           <div class="q-pa-md">
-            <q-input filled v-model="text" label="Menu Item Name" />
-            <q-input filled v-model="text" label="Menu Item Description" />
-            <q-input filled v-model="text" label="Menu Item Price" />
-            <q-input filled v-model="text" label="Calories" />
+            <q-input filled v-model="menuItem2.title" label="Menu Item Name" />
+            <q-input
+              filled
+              v-model="menuItem2.description"
+              label="Menu Item Description"
+            />
+            <q-input
+              filled
+              v-model.number="menuItem2.price"
+              label="Menu Item Price"
+            />
+            <q-input
+              filled
+              type="number"
+              v-model.number="menuItem2.calories"
+              label="Calories"
+            />
             <!-- <q-checkbox v-model="text" />  -->
             <!-- TODO: add new product toggle -->
 
             <!-- form need to push to the array not reference the object. -->
-            <q-input
-              v-model="formItemAdditions.name"
-              class="col"
-              square
-              filled
-              placeholder="Add Menu Option Name"
-              dense
-            >
-            </q-input>
-            <q-input
-              v-model="formItemAdditions.price"
-              class="col"
-              square
-              filled
-              placeholder="Add Menu Product Price"
-              dense
-            >
-              <template v-slot:append>
-                <q-btn
-                  @click="addMenuProductOption"
-                  round
-                  dense
-                  flat
-                  :disable="!formItemAdditions.name"
-                  icon="add"
-                />
-              </template>
-            </q-input>
+            <div class="q-pa-md"></div>
+            <p class="q-field-control item-start">Add menu item additions</p>
+            <div class="q-gutter-md row items-start">
+              <q-input
+                v-model="formItemAdditions.name"
+                class="col"
+                round
+                dense
+                flat
+                filled
+                placeholder="Add Menu Option Name"
+              >
+              </q-input>
+              <q-input
+                v-model.number="formItemAdditions.price"
+                class="col"
+                round
+                dense
+                flat
+                filled
+                type="number"
+                placeholder="Add Menu Product Price"
+              >
+                <template v-slot:append>
+                  <q-btn
+                    @click="addMenuProductOption"
+                    round
+                    dense
+                    flat
+                    :disable="!formItemAdditions.name"
+                    icon="add"
+                  />
+                </template>
+              </q-input>
+            </div>
+            <q-separator vertical inset />
 
             <q-list separator bordered>
               <q-item
@@ -106,7 +127,9 @@
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label>{{ option.name }}</q-item-label>
+                  <q-item-label
+                    >{{ option.name }} ..... {{ option.price }}</q-item-label
+                  >
                 </q-item-section>
                 <q-btn
                   @click.stop="deleteMenuProductOption(index)"
@@ -117,6 +140,7 @@
                 />
               </q-item>
             </q-list>
+            <q-separator vertical inset />
 
             <q-btn label="Submit" type="button" color="primary" />
             <q-btn
@@ -215,6 +239,17 @@ const emits = defineEmits<{
 
 const isOpen = ref(false);
 
+const menuItem2 = ref<IMenuItem>({
+  id: undefined,
+  image: '',
+  title: '',
+  description: '',
+  price: undefined,
+  calories: undefined,
+  itemAdditions: [],
+  dietaryOptions: [],
+});
+
 const menuItem = ref<IMenuItem>({
   id: 1,
   image: 'https://placehold.co/100x100',
@@ -229,13 +264,11 @@ const menuItem = ref<IMenuItem>({
 
 const formItemAdditions = ref({
   name: '',
-  price: 0,
+  price: undefined,
   added: true,
 });
 
 const itemAdditions = ref<IMenuItemAdditions[]>([]);
-
-const text = ref('');
 const imagePosition = ref('top-right');
 const dietaryOptions = ref([
   'Vegan',
@@ -276,5 +309,14 @@ const deleteMenuProductOption = (index: number) => {
 const closeMenuItemAdditionsModal = () => {
   isOpen.value = false;
   emits('closeMenuItemAdditionsModal', false);
+};
+
+const onSubmit = () => {
+  alert(1);
+};
+
+const onReset = () => {
+  itemAdditions.value = [];
+  menuItem.value = <IMenuItem>{};
 };
 </script>
