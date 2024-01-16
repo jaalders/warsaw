@@ -77,7 +77,6 @@ module.exports = configure(function (ctx) {
       chainWebpack(chain) {
         chain.plugin().use(webpack.DefinePlugin, [
           {
-            __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
             __UI_VERSION__: `'${
               require('@quasar/quasar-ui-qcalendar/package.json').version
             }'`,

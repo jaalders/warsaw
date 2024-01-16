@@ -7,12 +7,18 @@
             <q-btn @click="toggleRightDrawer" icon="menu" class="q-ma-md" />
             <q-btn @click="decreaseRows" label="Decrease Rows" />
             <q-btn @click="increaseRows" label="Increase Rows" />
+            <q-btn
+              @click="showComponent"
+              label="Show Component"
+              class="q-ma-md"
+            />
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-3">
               <MenuItem
                 :openMenuItemAddtionsModal="openMenuItemAddtionsModal"
                 @closeMenuItemAdditionsModal="handlecloseMenuItemAdditionsModal"
+                v-if="isShow"
               />
             </div>
             <div class="col-3"></div>
@@ -23,7 +29,6 @@
 
         <div class="q-mt-md">
           <div v-for="index in selectedColumns" :key="index" class="q-pa-md">
-            <!-- DROPPABLE AREA -->
             <div
               @dragover.prevent
               @drop="openMenuItemsModal"
@@ -43,7 +48,6 @@
       <q-list q-list padding class="text-primary">
         <q-item draggable="true">
           <q-item-section>
-            <!-- DRAGGABLE AREA -->
             <q-item-label> Standard Menu Item </q-item-label>
           </q-item-section>
         </q-item>
@@ -64,12 +68,15 @@
 </style>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import MenuItem from '../components/MenuComponents/MenuItem.vue';
+import { defineAsyncComponent, ref } from 'vue';
+const MenuItem = defineAsyncComponent(
+  () => import('../components/MenuComponents/MenuItem.vue')
+);
 
 const selectedColumns = ref(1);
 const rightDrawerOpen = ref(false);
 const openMenuItemAddtionsModal = ref(false);
+const isShow = ref(false);
 
 const openMenuItemsModal = () => {
   openMenuItemAddtionsModal.value = true;
@@ -95,5 +102,9 @@ const decreaseRows = () => {
     return;
   }
   selectedColumns.value -= 1;
+};
+
+const showComponent = () => {
+  isShow.value = true;
 };
 </script>
