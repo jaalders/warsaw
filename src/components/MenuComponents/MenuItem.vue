@@ -4,7 +4,7 @@
     <div class="product__body">
       <!-- TODO: - Add is new product option -->
       <img
-        :src="menuItem.image"
+        :src="menuItemInfo.image"
         :class="{
           'top-left': imagePosition === 'top-left',
           'top-right': imagePosition === 'top-right',
@@ -13,9 +13,11 @@
       />
       <div>
         <!-- TODO: fix this inline styling -->
-        <p style="display: inline-block">{{ menuItem.title }}</p>
-        <p style="display: inline-block; float: right">{{ menuItem.price }}</p>
-        <p>{{ menuItem.description }}</p>
+        <p style="display: inline-block">{{ menuItemInfo.title }}</p>
+        <p style="display: inline-block; float: right">
+          {{ menuItemInfo.price }}
+        </p>
+        <p>{{ menuItemInfo.description }}</p>
         <div class="menu__item__enhancements">
           <div
             v-for="(enhancement, index) in menuItemEnhancements"
@@ -52,21 +54,21 @@
       <div class="menu__form">
         <q-form class="q-gutter-md" @submit="onSubmit" @reset="onReset">
           <div class="q-pa-md">
-            <q-input filled v-model="menuItem2.title" label="Menu Item Name" />
+            <q-input filled v-model="menuItem.title" label="Menu Item Name" />
             <q-input
               filled
-              v-model="menuItem2.description"
+              v-model="menuItem.description"
               label="Menu Item Description"
             />
             <q-input
               filled
-              v-model.number="menuItem2.price"
+              v-model.number="menuItem.price"
               label="Menu Item Price"
             />
             <q-input
               filled
               type="number"
-              v-model.number="menuItem2.calories"
+              v-model.number="menuItem.calories"
               label="Calories"
             />
             <!-- <q-checkbox v-model="text" />  -->
@@ -110,9 +112,9 @@
             </div>
             <q-separator vertical inset />
 
-            <q-list separator bordered>
+            <q-list v-if="menuItem.itemAdditions" separator bordered>
               <q-item
-                v-for="(option, index) in itemAdditions"
+                v-for="(option, index) in menuItem.itemAdditions"
                 :key="option.name"
                 @click="option.added = !option.added"
                 clickable
@@ -140,6 +142,12 @@
                 />
               </q-item>
             </q-list>
+            <q-btn
+              label="Reset Item Additions"
+              type="button"
+              color="primary"
+              @click="resetMenuItemAdditions"
+            />
             <q-separator vertical inset />
 
             <q-btn label="Submit" type="button" color="primary" />
@@ -231,6 +239,10 @@ const props = defineProps({
     type: Boolean,
     required: false,
   },
+  menuItemInfo: {
+    type: Object as () => IMenuItem,
+    required: true,
+  },
 });
 
 const emits = defineEmits<{
@@ -239,38 +251,26 @@ const emits = defineEmits<{
 
 const isOpen = ref(false);
 
-const menuItem2 = ref<IMenuItem>({
-  id: undefined,
-  image: '',
-  title: '',
-  description: '',
-  price: undefined,
-  calories: undefined,
-  itemAdditions: [],
-  dietaryOptions: [],
-});
-
 const menuItem = ref<IMenuItem>({
-  id: 1,
+  id: localStorage.id
+    ? parseInt(JSON.parse(localStorage.id))
+    : (localStorage.setItem('id', '1'), 1),
   image: 'https://placehold.co/100x100',
   title: 'Product Title',
   description:
     'Here is a product description with a long amount of text to showcase the bits of the dish',
-  price: 17,
-  calories: 500,
-  itemAdditions: [],
-  dietaryOptions: [],
 });
 
-const formItemAdditions = ref({
+const menuItemCollection = ref<IMenuItem[]>([]);
+
+const formItemAdditions = ref<IMenuItemAdditions>({
   name: '',
-  price: undefined,
+  price: 0,
   added: true,
 });
 
-const itemAdditions = ref<IMenuItemAdditions[]>([]);
-const imagePosition = ref('top-right');
-const dietaryOptions = ref([
+const imagePosition = ref<string>('top-right');
+const dietaryOptions = ref<string[]>([
   'Vegan',
   'Gluten Free',
   'Keto',
@@ -287,36 +287,45 @@ const menuItemEnhancements = ref([
 
 watch(
   () => props.openMenuItemAddtionsModal,
-  (newValue: boolean) => {
-    isOpen.value = newValue;
+  (newValue: boolean): boolean => {
+    return (isOpen.value = newValue);
   }
 );
 
-const addMenuProductOption = () => {
-  itemAdditions.value.push({
+const addMenuProductOption = (): IMenuItemAdditions[] => {
+  // if this is null or undefined, initialize to a empty array first.
+  menuItem.value.itemAdditions ??= [];
+  menuItem.value.itemAdditions.push({
     name: formItemAdditions.value.name,
     price: formItemAdditions.value.price,
     added: true,
   });
 
-  console.log(itemAdditions.value);
+  formItemAdditions.value = <IMenuItemAdditions>{};
+
+  return menuItem.value.itemAdditions;
 };
 
-const deleteMenuProductOption = (index: number) => {
-  itemAdditions.value.splice(index, 1);
+const deleteMenuProductOption = (
+  index: number
+): IMenuItemAdditions[] | undefined => {
+  return menuItem.value.itemAdditions?.splice(index, 1);
 };
 
-const closeMenuItemAdditionsModal = () => {
+const closeMenuItemAdditionsModal = (): void => {
   isOpen.value = false;
-  emits('closeMenuItemAdditionsModal', false);
+  return emits('closeMenuItemAdditionsModal', false);
 };
 
 const onSubmit = () => {
   alert(1);
 };
 
-const onReset = () => {
-  itemAdditions.value = [];
-  menuItem.value = <IMenuItem>{};
+const onReset = (): IMenuItem => {
+  return (menuItem.value = <IMenuItem>{});
+};
+
+const resetMenuItemAdditions = (): IMenuItemAdditions[] => {
+  return (menuItem.value.itemAdditions = <IMenuItemAdditions[]>{});
 };
 </script>

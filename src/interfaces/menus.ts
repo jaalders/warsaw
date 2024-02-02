@@ -9,19 +9,19 @@ export interface IMenuSettings {
 }
 
 export interface IMenuItem {
-  id?: number;
+  id: number;
   image: string;
   title: string;
   description: string;
   price?: number;
   calories?: number;
-  itemAdditions: IMenuItemAdditions[];
+  itemAdditions?: IMenuItemAdditions[];
   dietaryOptions?: IMenuDietaryOptions[];
 }
 
 export interface IMenuItemAdditions {
   name: string;
-  price?: number;
+  price: number;
   added: boolean;
 }
 

@@ -15,10 +15,16 @@
           </div>
           <div class="row">
             <div class="col-3">
-              <MenuItem
-                :openMenuItemAddtionsModal="openMenuItemAddtionsModal"
-                @closeMenuItemAdditionsModal="handlecloseMenuItemAdditionsModal"
-              />
+              <div v-for="index in menuItem" :key="index.id">
+                <!-- this will need menuItem data from menuItem.vue -->
+                <MenuItem
+                  :menuItemInfo="index"
+                  :openMenuItemAddtionsModal="openMenuItemAddtionsModal"
+                  @closeMenuItemAdditionsModal="
+                    handlecloseMenuItemAdditionsModal
+                  "
+                />
+              </div>
             </div>
             <div class="col-3"></div>
             <div class="col-3"></div>
@@ -67,38 +73,61 @@
 </style>
 
 <script setup lang="ts">
+import { IMenuItem } from 'src/interfaces';
 import { defineAsyncComponent, ref } from 'vue';
 const MenuItem = defineAsyncComponent(
   () => import('../components/MenuComponents/MenuItem.vue')
 );
 
+const menuItem: IMenuItem[] = [
+  {
+    id: 1,
+    image: 'https://placehold.co/100x100',
+    title: 'Product Title',
+    description:
+      'Here is a product description with a long amount of text to showcase the bits of the dish',
+  },
+  {
+    id: 2,
+    image: 'https://placehold.co/100x100',
+    title: 'Product Info 2',
+    description: 'Test Description 2',
+  },
+  {
+    id: 3,
+    image: 'https://placehold.co/100x100',
+    title: 'Product Info 3',
+    description: 'Test Description 3',
+  },
+];
+
 const selectedColumns = ref(1);
 const rightDrawerOpen = ref(false);
 const openMenuItemAddtionsModal = ref(false);
 
-const openMenuItemsModal = () => {
-  openMenuItemAddtionsModal.value = true;
+const openMenuItemsModal = (): boolean => {
+  return (openMenuItemAddtionsModal.value = true);
 };
 
-const handlecloseMenuItemAdditionsModal = () => {
-  openMenuItemAddtionsModal.value = !openMenuItemAddtionsModal.value;
+const handlecloseMenuItemAdditionsModal = (): boolean => {
+  return (openMenuItemAddtionsModal.value = !openMenuItemAddtionsModal.value);
 };
 
-const toggleRightDrawer = () => {
-  rightDrawerOpen.value = !rightDrawerOpen.value;
+const toggleRightDrawer = (): boolean => {
+  return (rightDrawerOpen.value = !rightDrawerOpen.value);
 };
 
-const increaseRows = () => {
+const increaseRows = (): number | void => {
   if (selectedColumns.value >= 12) {
     return;
   }
-  selectedColumns.value += 1;
+  return (selectedColumns.value += 1);
 };
 
-const decreaseRows = () => {
+const decreaseRows = (): number | void => {
   if (selectedColumns.value <= 1) {
     return;
   }
-  selectedColumns.value -= 1;
+  return (selectedColumns.value -= 1);
 };
 </script>
