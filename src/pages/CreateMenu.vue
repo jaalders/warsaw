@@ -15,15 +15,11 @@
           </div>
           <div class="row">
             <div class="col-3">
-              <div v-for="index in menuItem" :key="index.id">
-                <!-- this will need menuItem data from menuItem.vue -->
-                <MenuItem
-                  :menuItemInfo="index"
-                  :openMenuItemAddtionsModal="openMenuItemAddtionsModal"
-                  @closeMenuItemAdditionsModal="
-                    handlecloseMenuItemAdditionsModal
-                  "
-                />
+              <div v-if="menuItem">
+                <div v-for="index in menuItem" :key="index.id">
+                  <!-- this will need menuItem data from menuItem.vue -->
+                  <AdvancedMenuItem :menuItemInfo="index" />
+                </div>
               </div>
             </div>
             <div class="col-3"></div>
@@ -59,6 +55,10 @@
       </q-list>
     </q-drawer>
   </q-layout>
+  <AdvancedMenuItemModal
+    :openAdvancedMenuItemModal="openAdvancedMenuItemModal"
+    @closeAdvancedMenuItemModal="closeAdvancedMenuItemModal"
+  />
 </template>
 
 <style scoped lang="scss">
@@ -75,42 +75,45 @@
 <script setup lang="ts">
 import { IMenuItem } from 'src/interfaces';
 import { defineAsyncComponent, ref } from 'vue';
-const MenuItem = defineAsyncComponent(
-  () => import('../components/MenuComponents/MenuItem.vue')
-);
+const { AdvancedMenuItem, AdvancedMenuItemModal } = {
+  AdvancedMenuItem: defineAsyncComponent(
+    () => import('../components/MenuComponents/AdvancedMenuItem.vue')
+  ),
+  AdvancedMenuItemModal: defineAsyncComponent(
+    () => import('../components/MenuComponents/AdvancedMenuItemModal.vue')
+  ),
+};
 
 const menuItem: IMenuItem[] = [
-  {
-    id: 1,
-    image: 'https://placehold.co/100x100',
-    title: 'Product Title',
-    description:
-      'Here is a product description with a long amount of text to showcase the bits of the dish',
-  },
-  {
-    id: 2,
-    image: 'https://placehold.co/100x100',
-    title: 'Product Info 2',
-    description: 'Test Description 2',
-  },
   {
     id: 3,
     image: 'https://placehold.co/100x100',
     title: 'Product Info 3',
     description: 'Test Description 3',
+    itemAdditions: [
+      { id: 1, name: 'Bacon', price: 1.0, added: true },
+      { id: 2, name: 'Cheese', price: 1.0, added: true },
+      {
+        id: 3,
+        name: 'Gluten-Free Bun really really really long text',
+        price: 2.0,
+        added: true,
+      },
+    ],
+    dietaryOptions: [{ id: 1, name: 'Paleo' }],
   },
 ];
 
 const selectedColumns = ref(1);
 const rightDrawerOpen = ref(false);
-const openMenuItemAddtionsModal = ref(false);
+const openAdvancedMenuItemModal = ref(false);
 
 const openMenuItemsModal = (): boolean => {
-  return (openMenuItemAddtionsModal.value = true);
+  return (openAdvancedMenuItemModal.value = true);
 };
 
-const handlecloseMenuItemAdditionsModal = (): boolean => {
-  return (openMenuItemAddtionsModal.value = !openMenuItemAddtionsModal.value);
+const closeAdvancedMenuItemModal = (): boolean => {
+  return (openAdvancedMenuItemModal.value = !openAdvancedMenuItemModal.value);
 };
 
 const toggleRightDrawer = (): boolean => {

@@ -3,7 +3,7 @@ export interface IMenuResponse {
 }
 
 export interface IMenuSettings {
-  id?: number;
+  id: number;
   name: string;
   description?: string;
 }
@@ -20,12 +20,12 @@ export interface IMenuItem {
 }
 
 export interface IMenuItemAdditions {
+  id: number;
   name: string;
-  price: number;
+  price: number | undefined;
   added: boolean;
 }
 
 export interface IMenuDietaryOptions {
-  id?: number;
-  name: string;
+  [key: string]: number | string;
 }
