@@ -27,5 +27,6 @@ export interface IMenuItemAdditions {
 }
 
 export interface IMenuDietaryOptions {
-  [key: string]: number | string;
+  id: number;
+  name: string;
 }

@@ -6,32 +6,44 @@
           <div class="q-pa-md">
             <q-input
               filled
+              v-model="menuItem.title"
+              label="Menu Item Name"
+              dense
+              :rules="[(val) => !!val || 'Field is required']"
+            />
+            <q-input
+              filled
               v-model="menuItem.image"
               label="Menu Item Image URL"
+              dense
+              :rules="[(val) => !!val || 'Field is required']"
             />
-            <q-input filled v-model="menuItem.title" label="Menu Item Name" />
             <q-input
               filled
               v-model="menuItem.description"
               label="Menu Item Description"
+              dense
+              :rules="[(val) => !!val || 'Field is required']"
             />
             <q-input
               filled
               v-model.number="menuItem.price"
               label="Menu Item Price"
+              dense
+              :rules="[(val) => !!val || 'Field is required']"
             />
             <q-input
               filled
               type="number"
               v-model.number="menuItem.calories"
               label="Calories"
+              dense
             />
-            <!-- <q-checkbox v-model="text" />  -->
             <!-- TODO: add new product toggle -->
 
             <q-space class="q-pa-md" />
 
-            <p class="q-field-control item-start">Add menu item additions</p>
+            <p class="q-field-control item-start">Add menu item additions:</p>
             <div class="q-gutter-md row items-start">
               <q-input
                 v-model="formItemAdditions.name"
@@ -40,7 +52,7 @@
                 dense
                 flat
                 filled
-                placeholder="Add Menu Option Name"
+                placeholder="Menu Item Addition Name"
               >
               </q-input>
               <q-input
@@ -51,7 +63,7 @@
                 flat
                 filled
                 type="number"
-                placeholder="Add Menu Product Price"
+                placeholder="Menu Item Addition Price"
               >
                 <template v-slot:append>
                   <q-btn
@@ -100,7 +112,7 @@
             <q-space class="q-pa-md" />
 
             <p class="q-field-control item-start">
-              Add menu item dietary options
+              Add menu item dietary options (ie: vegetarian)
             </p>
             <q-select
               filled
@@ -110,7 +122,10 @@
               use-chips
               emit-value
               map-options
-              label="Dietary Options ie: Vegetarian"
+              option-label="name"
+              option-value="id"
+              dense
+              label="Dietary Options"
             />
 
             <q-space class="q-pa-md" />
@@ -121,10 +136,19 @@
               color="primary"
               @click="resetMenuItemAdditions"
               flat
-            />
-
-            <q-btn label="Reset Menu Item" type="reset" color="primary" flat />
-            <q-btn label="Add Menu Item" type="button" color="primary" flat />
+            ></q-btn>
+            <q-btn
+              label="Reset Menu Item"
+              type="reset"
+              color="primary"
+              flat
+            ></q-btn>
+            <q-btn
+              label="Add Menu Item"
+              type="submit"
+              color="primary"
+              class="float-right"
+            ></q-btn>
           </div>
         </q-form>
       </div>
@@ -168,13 +192,13 @@ const getNextID = (): number => {
 };
 
 const dietaryOptions: IMenuDietaryOptions[] = [
-  { value: 1, label: 'Dairy Free' },
-  { value: 2, label: 'Gluten Free' },
-  { value: 3, label: 'Keto' },
-  { value: 4, label: 'Nut Free' },
-  { value: 5, label: 'Paleo' },
-  { value: 6, label: 'Vegan' },
-  { value: 7, label: 'Vegetarian' },
+  { id: 1, name: 'Dairy Free' },
+  { id: 2, name: 'Gluten Free' },
+  { id: 3, name: 'Keto' },
+  { id: 4, name: 'Nut Free' },
+  { id: 5, name: 'Paleo' },
+  { id: 6, name: 'Vegan' },
+  { id: 7, name: 'Vegetarian' },
 ];
 
 const menuItem = ref<IMenuItem>({
