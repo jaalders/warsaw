@@ -12,9 +12,8 @@
         alt="Product Image"
       />
       <div>
-        <!-- TODO: fix this inline styling -->
-        <p style="display: inline-block">{{ menuItemInfo.title }}</p>
-        <p style="display: inline-block; float: right">
+        <p class="inline">{{ menuItemInfo.title }}</p>
+        <p class="inline float-right">
           {{ menuItemInfo.price }}
         </p>
         <p>{{ menuItemInfo.description }}</p>
@@ -28,7 +27,7 @@
             </div>
           </div>
           <hr />
-          <p class="calories">Calories:</p>
+          <p class="calories">Calories: {{ menuItemInfo.calories }}</p>
           <div class="labels">
             <div style="line-break: anywhere">
               <span v-for="(option, index) in menuItemInfo.dietaryOptions" :key="index" class="dietary__options">
@@ -91,6 +90,10 @@
   display: flex;
 }
 
+.inline {
+  display: inline-block;
+}
+
 .price::before {
   content: '';
   background: repeating-linear-gradient(
@@ -118,5 +121,5 @@ defineProps({
   },
 });
 
-const imagePosition = ref<string>('top-right');
+const imagePosition = ref('top-right');
 </script>

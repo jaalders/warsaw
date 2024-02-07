@@ -100,7 +100,6 @@
               multiple
               :options="dietaryOptions"
               use-chips
-              emit-value
               map-options
               option-label="name"
               option-value="id"
@@ -168,6 +167,7 @@ const dietaryOptions: IMenuDietaryOptions[] = [
   { id: 7, name: 'Vegetarian' },
 ];
 
+// TODO: - fix ID sequencing
 const menuItem = ref<IMenuItem>({
   id: getNextID(),
   image: '',
@@ -175,8 +175,7 @@ const menuItem = ref<IMenuItem>({
   description: '',
 });
 
-const menuItemCollection = ref<IMenuItem[]>([]);
-
+// TODO: - fix ID sequencing
 const formItemAdditions = ref<IMenuItemAdditions>({
   id: getNextID(),
   name: '',
@@ -184,11 +183,12 @@ const formItemAdditions = ref<IMenuItemAdditions>({
   added: false,
 });
 
+// TODO: - fix ID sequencing
 const addMenuProductOption = (): IMenuItemAdditions[] => {
   // if this is null or undefined, initialize to a empty array first.
   menuItem.value.itemAdditions ??= [];
   menuItem.value.itemAdditions.push({
-    id: 1,
+    id: getNextID(),
     name: formItemAdditions.value.name,
     price: formItemAdditions.value.price,
     added: true,

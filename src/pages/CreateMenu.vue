@@ -7,13 +7,11 @@
             <q-btn @click="toggleRightDrawer" icon="menu" class="q-ma-md" />
             <q-btn @click="decreaseRows" label="Decrease Rows" />
             <q-btn @click="increaseRows" label="Increase Rows" />
-            <q-btn @click="openMenuItemsModal" label="Show Modal" class="q-ma-md" />
           </div>
           <div class="row">
             <div class="col-3">
               <div v-if="menuItems">
                 <div v-for="index in menuItems" :key="index.id">
-                  <!-- this will need menuItem data from menuItem.vue -->
                   <AdvancedMenuItem :menuItemInfo="index" />
                 </div>
               </div>
@@ -77,7 +75,27 @@ const { AdvancedMenuItem, AdvancedMenuItemModal } = {
   AdvancedMenuItemModal: defineAsyncComponent(() => import('../components/MenuComponents/AdvancedMenuItemModal.vue')),
 };
 
-const menuItems = ref<IMenuItem[]>([]);
+const menuItems = ref<IMenuItem[]>([
+  {
+    id: 3,
+    image: 'https://placehold.co/100x100',
+    title: 'Product Info 3',
+    description: 'Test Description 3',
+    price: 15,
+    calories: 500,
+    itemAdditions: [
+      { id: 998, name: 'Bacon', price: 1.0, added: true },
+      { id: 997, name: 'Cheese', price: 1.0, added: true },
+      {
+        id: 995,
+        name: 'Gluten-Free Bun really really really long text',
+        price: 2.0,
+        added: true,
+      },
+    ],
+    dietaryOptions: [{ id: 1, name: 'Paleo' }],
+  },
+]);
 
 const selectedColumns = ref(1);
 const rightDrawerOpen = ref(false);
