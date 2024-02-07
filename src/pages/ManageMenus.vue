@@ -22,13 +22,8 @@
                 filled
                 v-model="selectedMenuChoice"
                 :options="menuList"
-                :option-value="
-                  (opt) => (Object(opt) === opt && 'id' in opt ? opt.id : null)
-                "
-                :option-label="
-                  (opt) =>
-                    Object(opt) === opt && 'name' in opt ? opt.name : null
-                "
+                :option-value="(opt) => (Object(opt) === opt && 'id' in opt ? opt.id : null)"
+                :option-label="(opt) => (Object(opt) === opt && 'name' in opt ? opt.name : null)"
                 emit-value
                 map-options
                 style="min-width: 250px; max-width: 300px"
@@ -42,13 +37,8 @@
         </q-dialog>
         <DatePickerNavigation @today="onToday" @prev="onPrev" @next="onNext" />
 
-        <div
-          style="display: flex; justify-content: center; align-items: center"
-        >
-          <q-checkbox
-            v-model="mobile"
-            label="Mobile selection (first click, second click)"
-          />
+        <div style="display: flex; justify-content: center; align-items: center">
+          <q-checkbox v-model="mobile" label="Mobile selection (first click, second click)" />
         </div>
 
         <div class="row justify-center">
@@ -115,10 +105,7 @@ const selectedDate = ref(today()),
 
 const startEndDates = computed(() => {
   const dates = [];
-  if (
-    anchorDayIdentifier.value !== false &&
-    otherDayIdentifier.value !== false
-  ) {
+  if (anchorDayIdentifier.value !== false && otherDayIdentifier.value !== false) {
     if (anchorDayIdentifier.value <= otherDayIdentifier.value) {
       dates.push(anchorTimestamp.value.date, otherTimestamp.value.date);
     } else {

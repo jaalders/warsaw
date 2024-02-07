@@ -32,13 +32,7 @@
               dense
               :rules="[(val) => !!val || 'Field is required']"
             />
-            <q-input
-              filled
-              type="number"
-              v-model.number="menuItem.calories"
-              label="Calories"
-              dense
-            />
+            <q-input filled type="number" v-model.number="menuItem.calories" label="Calories" dense />
             <!-- TODO: add new product toggle -->
 
             <q-space class="q-pa-md" />
@@ -71,7 +65,7 @@
                     round
                     dense
                     flat
-                    :disable="!formItemAdditions.name"
+                    :disable="!formItemAdditions.name && !formItemAdditions.price"
                     icon="add"
                   />
                 </template>
@@ -87,33 +81,19 @@
                 v-ripple
               >
                 <q-item-section avatar>
-                  <q-checkbox
-                    v-model="option.added"
-                    class="no-pointer-events"
-                    color="primary"
-                  />
+                  <q-checkbox v-model="option.added" class="no-pointer-events" color="primary" />
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label
-                    >{{ option.name }} ..... {{ option.price }}</q-item-label
-                  >
+                  <q-item-label>{{ option.name }} ..... {{ option.price }}</q-item-label>
                 </q-item-section>
-                <q-btn
-                  @click.stop="deleteMenuProductOption(index)"
-                  flat
-                  round
-                  color="primary"
-                  icon="delete"
-                />
+                <q-btn @click.stop="deleteMenuProductOption(index)" flat round color="primary" icon="delete" />
               </q-item>
             </q-list>
 
             <q-space class="q-pa-md" />
 
-            <p class="q-field-control item-start">
-              Add menu item dietary options (ie: vegetarian)
-            </p>
+            <p class="q-field-control item-start">Add menu item dietary options (ie: vegetarian)</p>
             <q-select
               filled
               v-model="menuItem.dietaryOptions"
@@ -137,18 +117,8 @@
               @click="resetMenuItemAdditions"
               flat
             ></q-btn>
-            <q-btn
-              label="Reset Menu Item"
-              type="reset"
-              color="primary"
-              flat
-            ></q-btn>
-            <q-btn
-              label="Add Menu Item"
-              type="submit"
-              color="primary"
-              class="float-right"
-            ></q-btn>
+            <q-btn label="Reset Menu Item" type="reset" color="primary" flat></q-btn>
+            <q-btn label="Add Menu Item" type="submit" color="primary" class="float-right"></q-btn>
           </div>
         </q-form>
       </div>
@@ -157,11 +127,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  IMenuDietaryOptions,
-  IMenuItem,
-  IMenuItemAdditions,
-} from 'src/interfaces';
+import { IMenuDietaryOptions, IMenuItem, IMenuItemAdditions } from 'src/interfaces';
 import { ref, watch } from 'vue';
 
 const props = defineProps({
@@ -173,6 +139,7 @@ const props = defineProps({
 
 const emits = defineEmits<{
   closeAdvancedMenuItemModal: [boolean];
+  addMenuItem: [IMenuItem];
 }>();
 
 const isOpen = ref(false);
@@ -211,7 +178,7 @@ const menuItem = ref<IMenuItem>({
 const menuItemCollection = ref<IMenuItem[]>([]);
 
 const formItemAdditions = ref<IMenuItemAdditions>({
-  id: 1,
+  id: getNextID(),
   name: '',
   price: undefined,
   added: false,
@@ -232,19 +199,19 @@ const addMenuProductOption = (): IMenuItemAdditions[] => {
   return menuItem.value.itemAdditions;
 };
 
-const deleteMenuProductOption = (
-  index: number
-): IMenuItemAdditions[] | undefined => {
+const deleteMenuProductOption = (index: number): IMenuItemAdditions[] | undefined => {
   return menuItem.value.itemAdditions?.splice(index, 1);
 };
 
 const closeAdvancedMenuItemModal = (): void => {
   isOpen.value = false;
+  menuItem.value = <IMenuItem>{};
   return emits('closeAdvancedMenuItemModal', false);
 };
 
-const onSubmit = () => {
-  alert(1);
+const onSubmit = (): void => {
+  isOpen.value = false;
+  return emits('addMenuItem', menuItem.value);
 };
 
 const onReset = (): IMenuItem => {

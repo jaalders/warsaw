@@ -23,12 +23,7 @@
           @click="handleClick('dashboard')"
         >
           <q-item-section avatar>
-            <i
-              aria-hidden="true"
-              role="presentation"
-              class="material-icons q-icon notranslate"
-              >dashboard</i
-            >
+            <i aria-hidden="true" role="presentation" class="material-icons q-icon notranslate">dashboard</i>
           </q-item-section>
 
           <q-item-section>Dashboard</q-item-section>
@@ -42,12 +37,7 @@
           @click="handleClick('create-menu')"
         >
           <q-item-section avatar>
-            <i
-              aria-hidden="true"
-              role="presentation"
-              class="material-icons q-icon notranslate"
-              >restaurant_menu</i
-            >
+            <i aria-hidden="true" role="presentation" class="material-icons q-icon notranslate">restaurant_menu</i>
           </q-item-section>
 
           <q-item-section>Create Menu</q-item-section>
@@ -61,12 +51,7 @@
           @click="handleClick('manage-menus')"
         >
           <q-item-section avatar>
-            <i
-              aria-hidden="true"
-              role="presentation"
-              class="material-icons q-icon notranslate"
-              >menu_book</i
-            >
+            <i aria-hidden="true" role="presentation" class="material-icons q-icon notranslate">menu_book</i>
           </q-item-section>
 
           <q-item-section>Manage Menus</q-item-section>
@@ -80,12 +65,7 @@
           @click="handleClick('configure-displays')"
         >
           <q-item-section avatar>
-            <i
-              aria-hidden="true"
-              role="presentation"
-              class="material-icons q-icon notranslate"
-              >tv</i
-            >
+            <i aria-hidden="true" role="presentation" class="material-icons q-icon notranslate">tv</i>
           </q-item-section>
 
           <q-item-section>Configure Displays</q-item-section>
@@ -99,12 +79,7 @@
           @click="handleClick('menu-analytics')"
         >
           <q-item-section avatar>
-            <i
-              aria-hidden="true"
-              role="presentation"
-              class="material-icons q-icon notranslate"
-              >query_stats</i
-            >
+            <i aria-hidden="true" role="presentation" class="material-icons q-icon notranslate">query_stats</i>
           </q-item-section>
 
           <q-item-section>Menu Analytics</q-item-section>
@@ -162,9 +137,7 @@ async function fetchTodos(): Promise<IMenuSettings[] | void> {
 
     const todoSnapshot = await getDoc(doc(db, 'todos', 'HBC5lqP1jUUQpD8F5XkQ'));
 
-    todos.value = todoSnapshot.exists()
-      ? [todoSnapshot.data() as IMenuSettings]
-      : [];
+    todos.value = todoSnapshot.exists() ? [todoSnapshot.data() as IMenuSettings] : [];
   } catch (error) {
     console.error('Error fetching todos:', error);
     throw error;

@@ -1,10 +1,6 @@
 <template>
   <div class="row q-col-gutter-sm">
-    <div
-      v-for="menu in menuList"
-      :key="menu.id"
-      class="col-md-4 col-sm-12 col-xs-12"
-    >
+    <div v-for="menu in menuList" :key="menu.id" class="col-md-4 col-sm-12 col-xs-12">
       <q-card class="menu__card" flat bordered>
         <q-card-section horizontal>
           <q-img class="col" src="https://cdn.quasar.dev/img/mountains.jpg">
@@ -20,13 +16,7 @@
 
           <q-card-actions vertical class="justify-around q-px-md">
             <q-btn flat round color="red" icon="favorite" />
-            <q-btn
-              flat
-              round
-              color="primary"
-              icon="edit"
-              @click="editMenuSettings(menu)"
-            />
+            <q-btn flat round color="primary" icon="edit" @click="editMenuSettings(menu)" />
           </q-card-actions>
         </q-card-section>
       </q-card>
@@ -44,28 +34,16 @@
               v-model="menuSettings.name"
               label="Menu Name"
               lazy-rules
-              :rules="[
-                (val) => (val && val.length > 0) || 'Please type something',
-              ]"
+              :rules="[(val) => (val && val.length > 0) || 'Please type something']"
             />
 
-            <q-input
-              filled
-              v-model="menuSettings.description"
-              label="Menu Description"
-            />
+            <q-input filled v-model="menuSettings.description" label="Menu Description" />
           </q-form>
         </q-card-section>
 
         <q-card-actions align="right" class="bg-white text-teal">
           <q-btn label="Submit" type="submit" color="primary" />
-          <q-btn
-            label="Reset"
-            type="reset"
-            color="primary"
-            flat
-            class="q-ml-sm"
-          />
+          <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
         </q-card-actions>
       </q-card>
     </q-dialog>

@@ -19,11 +19,7 @@
         </p>
         <p>{{ menuItemInfo.description }}</p>
         <div class="menu__item__enhancements">
-          <div
-            v-for="(enhancement, index) in menuItemInfo.itemAdditions"
-            :key="index"
-            class="enhancement"
-          >
+          <div v-for="(enhancement, index) in menuItemInfo.itemAdditions" :key="index" class="enhancement">
             <div class="enhancement__details">
               <div style="line-break: anywhere">
                 <span class="item">{{ enhancement.name }}</span>
@@ -32,14 +28,10 @@
             </div>
           </div>
           <hr />
-          <p class="calories">Calories: </p>
+          <p class="calories">Calories:</p>
           <div class="labels">
             <div style="line-break: anywhere">
-              <span
-                v-for="(option, index) in menuItemInfo.dietaryOptions"
-                :key="index"
-                class="dietary__options"
-              >
+              <span v-for="(option, index) in menuItemInfo.dietaryOptions" :key="index" class="dietary__options">
                 {{ option.name }}
               </span>
             </div>
@@ -127,5 +119,4 @@ defineProps({
 });
 
 const imagePosition = ref<string>('top-right');
-
 </script>
