@@ -43,7 +43,12 @@
       <q-list q-list padding class="text-primary">
         <q-item draggable="true">
           <q-item-section>
-            <q-item-label> Standard Menu Item </q-item-label>
+            <q-item-label> Basic Menu Item </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item draggable="true">
+          <q-item-section>
+            <q-item-label> Advanced Menu Item </q-item-label>
           </q-item-section>
         </q-item>
       </q-list>

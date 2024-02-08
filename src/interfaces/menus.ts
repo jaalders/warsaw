@@ -10,10 +10,10 @@ export interface IMenuSettings {
 
 export interface IMenuItem {
   id: number;
-  image: string;
+  image?: string;
   title: string;
-  description: string;
-  price?: number;
+  description?: string;
+  price: number | undefined;
   calories?: number;
   itemAdditions?: IMenuItemAdditions[];
   dietaryOptions?: IMenuDietaryOptions[];

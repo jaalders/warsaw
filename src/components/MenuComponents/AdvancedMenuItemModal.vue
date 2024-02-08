@@ -128,6 +128,7 @@
 <script setup lang="ts">
 import { IMenuDietaryOptions, IMenuItem, IMenuItemAdditions } from 'src/interfaces';
 import { ref, watch } from 'vue';
+import { getNextID } from '../../utilities/utilities';
 
 const props = defineProps({
   openAdvancedMenuItemModal: {
@@ -138,24 +139,10 @@ const props = defineProps({
 
 const emits = defineEmits<{
   closeAdvancedMenuItemModal: [boolean];
-  addMenuItem: [IMenuItem];
+  addAdvancedMenuItem: [IMenuItem];
 }>();
 
 const isOpen = ref(false);
-
-const getNextID = (): number => {
-  const storedID = localStorage.getItem('id');
-
-  if (storedID === null) {
-    localStorage.setItem('id', '1');
-    return 1;
-  } else {
-    const id = parseInt(storedID);
-    const nextID = id + 1;
-    localStorage.setItem('id', nextID.toString());
-    return nextID;
-  }
-};
 
 const dietaryOptions: IMenuDietaryOptions[] = [
   { id: 1, name: 'Dairy Free' },
@@ -172,6 +159,7 @@ const menuItem = ref<IMenuItem>({
   id: getNextID(),
   image: '',
   title: '',
+  price: undefined,
   description: '',
 });
 
@@ -211,7 +199,7 @@ const closeAdvancedMenuItemModal = (): void => {
 
 const onSubmit = (): void => {
   isOpen.value = false;
-  return emits('addMenuItem', menuItem.value);
+  return emits('addAdvancedMenuItem', menuItem.value);
 };
 
 const onReset = (): IMenuItem => {

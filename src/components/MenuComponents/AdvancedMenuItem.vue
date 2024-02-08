@@ -46,67 +46,67 @@
   border: 1px solid #ccc;
   padding: 1rem;
   margin: 1rem;
-}
 
-.new-item {
-  background-color: #4caf50;
-  color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  display: flex;
-  align-items: center;
-}
+  &.new-item {
+    background-color: #4caf50;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+  }
 
-.labels,
-.calories,
-.menu__item__enhancements {
-  margin-top: 0.5rem;
-}
+  &.labels,
+  &.calories,
+  &.menu__item__enhancements {
+    margin-top: 0.5rem;
+  }
 
-.dietary__options {
-  background-color: #2196f3;
-  color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.75rem;
-  margin-right: 0.5rem;
-  font-size: 0.75rem;
-  white-space: nowrap;
-  display: inline-block;
-  margin-top: 0.2rem;
-  margin-bottom: 0.2rem;
-}
+  .dietary__options {
+    background-color: #2196f3;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.75rem;
+    margin-right: 0.5rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    display: inline-block;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+  }
 
-.enhancement {
-  margin-bottom: 0.25rem;
-}
+  .enhancement {
+    margin-bottom: 0.25rem;
 
-.enhancement__details > div {
-  display: flex;
-}
+    &__details > div {
+      display: flex;
+    }
+  }
 
-.price {
-  flex-grow: 1;
-  text-align: right;
-  display: flex;
-}
+  .price {
+    flex-grow: 1;
+    text-align: right;
+    display: flex;
 
-.inline {
-  display: inline-block;
-}
+    &::before {
+      content: '';
+      background: repeating-linear-gradient(
+        to right,
+        currentColor,
+        currentColor 0.0625rem,
+        transparent 0.125rem,
+        transparent 0.25rem
+      );
+      height: 0.0625rem;
+      flex-grow: 1;
+      display: inline-block;
+      margin: 1rem 0.4rem 0 0.4rem;
+    }
+  }
 
-.price::before {
-  content: '';
-  background: repeating-linear-gradient(
-    to right,
-    currentColor,
-    currentColor 0.0625rem,
-    transparent 0.125rem,
-    transparent 0.25rem
-  );
-  height: 0.0625rem;
-  flex-grow: 1;
-  display: inline-block;
-  margin: 1rem 0.4rem 0 0.4rem;
+  .inline {
+    display: inline-block;
+  }
 }
 </style>
 
