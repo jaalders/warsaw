@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 import { IMenuItem } from 'src/interfaces';
-import { getNextID } from '../../utilities/utilities';
+import { getNextID } from '../../../utilities/utilities';
 import { ref, watch } from 'vue';
 
 const isOpen = ref(false);

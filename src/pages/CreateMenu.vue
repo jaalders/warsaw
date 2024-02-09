@@ -5,10 +5,15 @@
         <div class="q-mb-md">
           <div class="row">
             <q-btn @click="toggleRightDrawer" icon="menu" class="q-ma-md" />
-            <q-btn @click="decreaseRows" label="Decrease Rows" />
             <q-btn @click="increaseRows" label="Increase Rows" />
+            <q-btn @click="decreaseRows" label="Decrease Rows" />
+            <q-btn @click="increaseColumns" label="Increase Columns" />
+            <q-btn @click="decreaseColumns" label="Decrease Columns" />
           </div>
           <div class="row">
+            <div v-for="cols in columnCount" :key="cols">
+              <p>test</p>
+            </div>
             <div class="col-3">
               <div v-if="menuItems">
                 <div v-for="menuItem in menuItems" :key="menuItem.id">
@@ -49,11 +54,21 @@
         <q-item draggable="true" id="bMenuItem" @dragstart="dragstart">
           <q-item-section>
             <q-item-label> Basic Menu Item </q-item-label>
+            <q-item-label caption>Add singular menu item. (label / price)</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item draggable="true" id="cMenuItem" @dragstart="dragstart">
+          <q-item-section>
+            <q-item-label> Basic Menu Item List </q-item-label>
+            <q-item-label caption>Add multiple menu items listed together. (label / price)</q-item-label>
           </q-item-section>
         </q-item>
         <q-item draggable="true" id="aMenuItem" @dragstart="dragstart">
           <q-item-section>
             <q-item-label> Advanced Menu Item </q-item-label>
+            <q-item-label caption
+              >Add a menu item with options such as item additions and dietary restrictions</q-item-label
+            >
           </q-item-section>
         </q-item>
       </q-list>
@@ -86,10 +101,12 @@
 import { IMenuItem } from 'src/interfaces';
 import { defineAsyncComponent, ref } from 'vue';
 const { BasicMenuItem, BasicMenuItemModal, AdvancedMenuItem, AdvancedMenuItemModal } = {
-  AdvancedMenuItem: defineAsyncComponent(() => import('../components/MenuComponents/AdvancedMenuItem.vue')),
-  AdvancedMenuItemModal: defineAsyncComponent(() => import('../components/MenuComponents/AdvancedMenuItemModal.vue')),
-  BasicMenuItem: defineAsyncComponent(() => import('../components/MenuComponents/BasicMenuItem.vue')),
-  BasicMenuItemModal: defineAsyncComponent(() => import('../components/MenuComponents/BasicMenuItemModal.vue')),
+  AdvancedMenuItem: defineAsyncComponent(() => import('../components/MenuComponents/Templates/AdvancedMenuItem.vue')),
+  AdvancedMenuItemModal: defineAsyncComponent(
+    () => import('../components/MenuComponents/Modals/AdvancedMenuItemModal.vue')
+  ),
+  BasicMenuItem: defineAsyncComponent(() => import('../components/MenuComponents/Templates/BasicMenuItem.vue')),
+  BasicMenuItemModal: defineAsyncComponent(() => import('../components/MenuComponents/Modals/BasicMenuItemModal.vue')),
 };
 
 const draggedElementId = ref('');
@@ -121,6 +138,7 @@ const selectedColumns = ref(1);
 const rightDrawerOpen = ref(false);
 const openAdvancedMenuItemModal = ref(false);
 const openBasicMenuItemModal = ref(false);
+const openBasicItemListModal = ref(false);
 
 const dragstart = (event: DragEvent) => {
   draggedElementId.value = '';
@@ -128,14 +146,19 @@ const dragstart = (event: DragEvent) => {
   draggedElementId.value = targetElement.id;
 };
 
-const openMenuItemsModal = () => {
+const openMenuItemsModal = (): boolean => {
   if (draggedElementId.value === 'bMenuItem') {
+    draggedElementId.value = '';
     openBasicMenuItemModal.value = true;
-    draggedElementId.value = '';
   } else if (draggedElementId.value === 'aMenuItem') {
-    openAdvancedMenuItemModal.value = true;
     draggedElementId.value = '';
+    openAdvancedMenuItemModal.value = true;
+  } else if (draggedElementId.value === 'cMenuItem') {
+    draggedElementId.value = '';
+    openBasicItemListModal.value = true;
   }
+
+  return openAdvancedMenuItemModal.value;
 };
 
 const closeBasicMenuItemModal = (): boolean => {
@@ -167,5 +190,26 @@ const decreaseRows = (): number | void => {
     return;
   }
   return (selectedColumns.value -= 1);
+};
+
+const columnCountOptions = [1, 2, 3, 4, 6, 12];
+const columnCount = ref(columnCountOptions[5]);
+
+const increaseColumns = (): number => {
+  const currentIndex = columnCountOptions.indexOf(columnCount.value);
+  if (currentIndex < columnCountOptions.length - 1) {
+    columnCount.value = columnCountOptions[currentIndex + 1];
+  }
+
+  return columnCount.value;
+};
+
+const decreaseColumns = (): number => {
+  const currentIndex = columnCountOptions.indexOf(columnCount.value);
+  if (currentIndex > 0) {
+    columnCount.value = columnCountOptions[currentIndex - 1];
+  }
+
+  return columnCount.value;
 };
 </script>

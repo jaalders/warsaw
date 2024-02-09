@@ -112,7 +112,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { IMenuItem } from '../../interfaces/menus';
+import { IMenuItem } from '../../../interfaces';
 
 defineProps({
   menuItemInfo: {

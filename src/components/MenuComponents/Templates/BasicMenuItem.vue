@@ -51,7 +51,7 @@
 </style>
 
 <script setup lang="ts">
-import { IMenuItem } from '../../interfaces/menus';
+import { IMenuItem } from '../../../interfaces';
 
 defineProps({
   menuItemInfo: {

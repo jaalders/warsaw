@@ -128,7 +128,7 @@
 <script setup lang="ts">
 import { IMenuDietaryOptions, IMenuItem, IMenuItemAdditions } from 'src/interfaces';
 import { ref, watch } from 'vue';
-import { getNextID } from '../../utilities/utilities';
+import { getNextID } from '../../../utilities/utilities';
 
 const props = defineProps({
   openAdvancedMenuItemModal: {
@@ -203,7 +203,6 @@ const onSubmit = () => {
     try {
       await emits('addMenuItem', menuItem.value);
       menuItem.value = <IMenuItem>{ menuItemTypeId: 2 };
-
       isOpen.value = false;
       resolve();
     } catch (error) {
