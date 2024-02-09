@@ -11,9 +11,16 @@
             <q-btn @click="decreaseColumns" label="Decrease Columns" />
           </div>
           <div class="row">
-            <div v-for="cols in columnCount" :key="cols">
-              <p>test</p>
+            <div v-for="cols in columnCount" :key="cols" style="display: flex">
+              <div
+                :class="columnCountClass"
+                @dragover.prevent
+                @drop="openMenuItemsModal"
+                style="height: 200px; width: 40px; border: 2px solid #2ecc71"
+              ></div>
             </div>
+          </div>
+          <div class="row">
             <div class="col-3">
               <div v-if="menuItems">
                 <div v-for="menuItem in menuItems" :key="menuItem.id">
@@ -49,8 +56,12 @@
       </q-page>
     </q-page-container>
 
-    <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
+    <q-drawer show-if-above v-model="menuSettingsSidebar" side="right" bordered>
       <q-list q-list padding class="text-primary">
+        <q-item-label class="text-center text-subtitle1" header
+          >Drag elements below to begin adding menu items</q-item-label
+        >
+        <q-separator spaced />
         <q-item draggable="true" id="bMenuItem" @dragstart="dragstart">
           <q-item-section>
             <q-item-label> Basic Menu Item </q-item-label>
@@ -135,7 +146,7 @@ const menuItems = ref<IMenuItem[]>([
 ]);
 
 const selectedColumns = ref(1);
-const rightDrawerOpen = ref(false);
+const menuSettingsSidebar = ref(false);
 const openAdvancedMenuItemModal = ref(false);
 const openBasicMenuItemModal = ref(false);
 const openBasicItemListModal = ref(false);
@@ -175,7 +186,7 @@ const addMenuItem = (menuItem: IMenuItem): IMenuItem[] => {
 };
 
 const toggleRightDrawer = (): boolean => {
-  return (rightDrawerOpen.value = !rightDrawerOpen.value);
+  return (menuSettingsSidebar.value = !menuSettingsSidebar.value);
 };
 
 const increaseRows = (): number | void => {
@@ -194,6 +205,7 @@ const decreaseRows = (): number | void => {
 
 const columnCountOptions = [1, 2, 3, 4, 6, 12];
 const columnCount = ref(columnCountOptions[5]);
+const columnCountClass = ref('col-' + `${columnCount.value}`);
 
 const increaseColumns = (): number => {
   const currentIndex = columnCountOptions.indexOf(columnCount.value);
