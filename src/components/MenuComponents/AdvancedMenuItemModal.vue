@@ -159,6 +159,7 @@ const menuItem = ref<IMenuItem>({
   id: getNextID(),
   image: '',
   title: '',
+  menuItemTypeId: 2,
   price: undefined,
   description: '',
 });

@@ -12,6 +12,7 @@
             <div class="col-3">
               <div v-if="menuItems">
                 <div v-for="index in menuItems" :key="index.id">
+                  <BasicMenuItem :menuItemInfo="index" />
                   <AdvancedMenuItem :menuItemInfo="index" />
                 </div>
               </div>
@@ -41,12 +42,12 @@
 
     <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
       <q-list q-list padding class="text-primary">
-        <q-item draggable="true">
+        <q-item draggable="true" id="bMenuItem" @dragstart="dragstart">
           <q-item-section>
             <q-item-label> Basic Menu Item </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item draggable="true">
+        <q-item draggable="true" id="aMenuItem" @dragstart="dragstart">
           <q-item-section>
             <q-item-label> Advanced Menu Item </q-item-label>
           </q-item-section>
@@ -57,6 +58,11 @@
   <AdvancedMenuItemModal
     :openAdvancedMenuItemModal="openAdvancedMenuItemModal"
     @closeAdvancedMenuItemModal="closeAdvancedMenuItemModal"
+    @addMenuItem="addMenuItem"
+  />
+  <BasicMenuItemModal
+    :openBasicMenuItemModal="openBasicMenuItemModal"
+    @closeBasicMenuItemModal="closeBasicMenuItemModal"
     @addMenuItem="addMenuItem"
   />
 </template>
@@ -75,10 +81,14 @@
 <script setup lang="ts">
 import { IMenuItem } from 'src/interfaces';
 import { defineAsyncComponent, ref } from 'vue';
-const { AdvancedMenuItem, AdvancedMenuItemModal } = {
+const { BasicMenuItem, BasicMenuItemModal, AdvancedMenuItem, AdvancedMenuItemModal } = {
   AdvancedMenuItem: defineAsyncComponent(() => import('../components/MenuComponents/AdvancedMenuItem.vue')),
   AdvancedMenuItemModal: defineAsyncComponent(() => import('../components/MenuComponents/AdvancedMenuItemModal.vue')),
+  BasicMenuItem: defineAsyncComponent(() => import('../components/MenuComponents/BasicMenuItem.vue')),
+  BasicMenuItemModal: defineAsyncComponent(() => import('../components/MenuComponents/BasicMenuItemModal.vue')),
 };
+
+const draggedElementId = ref('');
 
 const menuItems = ref<IMenuItem[]>([
   {
@@ -105,18 +115,34 @@ const menuItems = ref<IMenuItem[]>([
 const selectedColumns = ref(1);
 const rightDrawerOpen = ref(false);
 const openAdvancedMenuItemModal = ref(false);
+const openBasicMenuItemModal = ref(false);
 
-const openMenuItemsModal = (): boolean => {
-  return (openAdvancedMenuItemModal.value = true);
+const dragstart = (event: DragEvent) => {
+  draggedElementId.value = '';
+  const targetElement = event.target as HTMLElement;
+  draggedElementId.value = targetElement.id;
+};
+
+const openMenuItemsModal = () => {
+  if (draggedElementId.value === 'bMenuItem') {
+    openBasicMenuItemModal.value = true;
+    draggedElementId.value = '';
+  } else if (draggedElementId.value === 'aMenuItem') {
+    openAdvancedMenuItemModal.value = true;
+    draggedElementId.value = '';
+  }
+};
+
+const closeBasicMenuItemModal = (): boolean => {
+  return (openBasicMenuItemModal.value = false);
 };
 
 const closeAdvancedMenuItemModal = (): boolean => {
-  return (openAdvancedMenuItemModal.value = !openAdvancedMenuItemModal.value);
+  return (openAdvancedMenuItemModal.value = false);
 };
 
 const addMenuItem = (menuItem: IMenuItem): IMenuItem[] => {
   menuItems.value.push(menuItem);
-
   return menuItems.value;
 };
 

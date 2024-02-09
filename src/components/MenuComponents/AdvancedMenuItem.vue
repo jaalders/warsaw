@@ -19,12 +19,12 @@
         <p>{{ menuItemInfo.description }}</p>
         <div class="menu__item__enhancements">
           <div v-for="(enhancement, index) in menuItemInfo.itemAdditions" :key="index" class="enhancement">
-            <div class="enhancement__details">
+            <span class="enhancement__details">
               <div style="line-break: anywhere">
-                <span class="item">{{ enhancement.name }}</span>
+                <span>{{ enhancement.name }}</span>
                 <span class="price">{{ enhancement.price }}</span>
               </div>
-            </div>
+            </span>
           </div>
           <hr />
           <p class="calories">Calories: {{ menuItemInfo.calories }}</p>

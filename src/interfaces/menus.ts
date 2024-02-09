@@ -10,6 +10,7 @@ export interface IMenuSettings {
 
 export interface IMenuItem {
   id: number;
+  menuItemTypeId: number;
   image?: string;
   title: string;
   description?: string;

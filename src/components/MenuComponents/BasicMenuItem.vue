@@ -1,25 +1,31 @@
+<!-- TODO: add "chef's special" focusing menu item -->
 <template>
   <div class="product__card">
     <div class="product__body">
-      <div class="menu__item__enhancements">
-        <div v-for="(enhancement, index) in menuItemInfo.itemAdditions" :key="index" class="enhancement">
-          <div class="enhancement__details">
-            <div style="line-break: anywhere">
-              <span class="item">{{ enhancement.name }}</span>
-              <span class="price">{{ enhancement.price }}</span>
-            </div>
-          </div>
+      <!-- TODO: - Add is new product option -->
+      <div class="enhancement__details">
+        <div style="line-break: anywhere">
+          <span>{{ menuItemInfo.title }}</span>
+          <span class="price">{{ menuItemInfo.price }}</span>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .product__card {
   border: 1px solid #ccc;
   padding: 1rem;
   margin: 1rem;
+
+  .enhancement {
+    margin-bottom: 0.25rem;
+
+    &__details > div {
+      display: flex;
+    }
+  }
 
   .price {
     flex-grow: 1;
