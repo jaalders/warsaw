@@ -11,9 +11,13 @@
           <div class="row">
             <div class="col-3">
               <div v-if="menuItems">
-                <div v-for="index in menuItems" :key="index.id">
-                  <BasicMenuItem :menuItemInfo="index" />
-                  <AdvancedMenuItem :menuItemInfo="index" />
+                <div v-for="menuItem in menuItems" :key="menuItem.id">
+                  <template v-if="menuItem.menuItemTypeId === 1">
+                    <BasicMenuItem :menuItemInfo="menuItem" />
+                  </template>
+                  <template v-else-if="menuItem.menuItemTypeId === 2">
+                    <AdvancedMenuItem :menuItemInfo="menuItem" />
+                  </template>
                 </div>
               </div>
             </div>
@@ -96,6 +100,7 @@ const menuItems = ref<IMenuItem[]>([
     image: 'https://placehold.co/100x100',
     title: 'Product Info 3',
     description: 'Test Description 3',
+    menuItemTypeId: 2,
     price: 15,
     calories: 500,
     itemAdditions: [

@@ -61,9 +61,17 @@ const closeBasicMenuItemModal = (): void => {
   return emits('closeBasicMenuItemModal', false);
 };
 
-const onSubmit = (): void => {
-  isOpen.value = false;
-  return emits('addMenuItem', menuItem.value);
+const onSubmit = () => {
+  return new Promise<void>(async (resolve, reject): Promise<void> => {
+    try {
+      await emits('addMenuItem', menuItem.value);
+      menuItem.value = <IMenuItem>{ menuItemTypeId: 1 };
+      isOpen.value = false;
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
 };
 
 const onReset = (): IMenuItem => {

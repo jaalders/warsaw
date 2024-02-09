@@ -139,7 +139,7 @@ const props = defineProps({
 
 const emits = defineEmits<{
   closeAdvancedMenuItemModal: [boolean];
-  addAdvancedMenuItem: [IMenuItem];
+  addMenuItem: [IMenuItem];
 }>();
 
 const isOpen = ref(false);
@@ -198,9 +198,18 @@ const closeAdvancedMenuItemModal = (): void => {
   return emits('closeAdvancedMenuItemModal', false);
 };
 
-const onSubmit = (): void => {
-  isOpen.value = false;
-  return emits('addAdvancedMenuItem', menuItem.value);
+const onSubmit = () => {
+  return new Promise<void>(async (resolve, reject): Promise<void> => {
+    try {
+      await emits('addMenuItem', menuItem.value);
+      menuItem.value = <IMenuItem>{ menuItemTypeId: 2 };
+
+      isOpen.value = false;
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
 };
 
 const onReset = (): IMenuItem => {
