@@ -11,8 +11,12 @@
             <q-btn @click="decreaseColumns" label="Decrease Columns" />
           </div>
           <div class="row">
-            <div v-for="cols in columnCount" :key="cols" :class="`col-${inverseColumnCount}`">
-              <p>col-2</p>
+            <div class="col-12">
+              <q-btn @click="addMenuSection" label="Add Menu Section" />
+            </div>
+          </div>
+          <div class="row">
+            <div v-for="cols in columnCount" :key="cols" :class="`q-pa-md col-${inverseColumnCount}`">
               <div @dragover.prevent @drop="openMenuItemsModal" style="height: 200px; border: 1px solid #2ecc71"></div>
             </div>
           </div>
@@ -119,26 +123,26 @@ const { BasicMenuItem, BasicMenuItemModal, AdvancedMenuItem, AdvancedMenuItemMod
 const draggedElementId = ref('');
 
 const menuItems = ref<IMenuItem[]>([
-  {
-    id: 3,
-    image: 'https://placehold.co/100x100',
-    title: 'Product Info 3',
-    description: 'Test Description 3',
-    menuItemTypeId: 2,
-    price: 15,
-    calories: 500,
-    itemAdditions: [
-      { id: 998, name: 'Bacon', price: 1.0, added: true },
-      { id: 997, name: 'Cheese', price: 1.0, added: true },
-      {
-        id: 995,
-        name: 'Gluten-Free Bun really really really long text',
-        price: 2.0,
-        added: true,
-      },
-    ],
-    dietaryOptions: [{ id: 1, name: 'Paleo' }],
-  },
+  // {
+  //   id: 3,
+  //   image: 'https://placehold.co/100x100',
+  //   title: 'Product Info 3',
+  //   description: 'Test Description 3',
+  //   menuItemTypeId: 2,
+  //   price: 15,
+  //   calories: 500,
+  //   itemAdditions: [
+  //     { id: 998, name: 'Bacon', price: 1.0, added: true },
+  //     { id: 997, name: 'Cheese', price: 1.0, added: true },
+  //     {
+  //       id: 995,
+  //       name: 'Gluten-Free Bun really really really long text',
+  //       price: 2.0,
+  //       added: true,
+  //     },
+  //   ],
+  //   dietaryOptions: [{ id: 1, name: 'Paleo' }],
+  // },
 ]);
 
 const selectedColumns = ref(1);
@@ -146,6 +150,7 @@ const menuSettingsSidebar = ref(false);
 const openAdvancedMenuItemModal = ref(false);
 const openBasicMenuItemModal = ref(false);
 const openBasicItemListModal = ref(false);
+const openMenuSectionOptionsModal = ref(false);
 
 const dragstart = (event: DragEvent) => {
   draggedElementId.value = '';
@@ -156,13 +161,13 @@ const dragstart = (event: DragEvent) => {
 const openMenuItemsModal = (): boolean => {
   if (draggedElementId.value === 'bMenuItem') {
     draggedElementId.value = '';
-    openBasicMenuItemModal.value = true;
+    return (openBasicMenuItemModal.value = true);
   } else if (draggedElementId.value === 'aMenuItem') {
     draggedElementId.value = '';
-    openAdvancedMenuItemModal.value = true;
+    return (openAdvancedMenuItemModal.value = true);
   } else if (draggedElementId.value === 'cMenuItem') {
     draggedElementId.value = '';
-    openBasicItemListModal.value = true;
+    return (openBasicItemListModal.value = true);
   }
 
   return openAdvancedMenuItemModal.value;
@@ -199,8 +204,8 @@ const decreaseRows = (): number | void => {
   return (selectedColumns.value -= 1);
 };
 
-const columnCountOptions = [1, 2, 3, 4, 6, 12];
-const columnCount = ref(columnCountOptions[5]);
+const columnCountOptions = [1, 2, 3, 4];
+const columnCount = ref(columnCountOptions[3]);
 
 const inverseColumnCount = computed(() => {
   const selectedValue = columnCount.value;
@@ -224,4 +229,8 @@ const decreaseColumns = (): number => {
 
   return columnCount.value;
 };
+
+const addMenuSection = (): boolean => {
+  return openMenuSectionOptionsModal.value = true;
+}
 </script>
