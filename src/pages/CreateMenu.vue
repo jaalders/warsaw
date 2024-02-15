@@ -11,13 +11,9 @@
             <q-btn @click="decreaseColumns" label="Decrease Columns" />
           </div>
           <div class="row">
-            <div v-for="cols in columnCount" :key="cols" style="display: flex">
-              <div
-                :class="columnCountClass"
-                @dragover.prevent
-                @drop="openMenuItemsModal"
-                style="height: 200px; width: 40px; border: 2px solid #2ecc71"
-              ></div>
+            <div v-for="cols in columnCount" :key="cols" :class="`col-${inverseColumnCount}`">
+              <p>col-2</p>
+              <div @dragover.prevent @drop="openMenuItemsModal" style="height: 200px; border: 1px solid #2ecc71"></div>
             </div>
           </div>
           <div class="row">
@@ -110,7 +106,7 @@
 
 <script setup lang="ts">
 import { IMenuItem } from 'src/interfaces';
-import { defineAsyncComponent, ref } from 'vue';
+import { computed, defineAsyncComponent, ref } from 'vue';
 const { BasicMenuItem, BasicMenuItemModal, AdvancedMenuItem, AdvancedMenuItemModal } = {
   AdvancedMenuItem: defineAsyncComponent(() => import('../components/MenuComponents/Templates/AdvancedMenuItem.vue')),
   AdvancedMenuItemModal: defineAsyncComponent(
@@ -205,7 +201,11 @@ const decreaseRows = (): number | void => {
 
 const columnCountOptions = [1, 2, 3, 4, 6, 12];
 const columnCount = ref(columnCountOptions[5]);
-const columnCountClass = ref('col-' + `${columnCount.value}`);
+
+const inverseColumnCount = computed(() => {
+  const selectedValue = columnCount.value;
+  return 12 / selectedValue;
+});
 
 const increaseColumns = (): number => {
   const currentIndex = columnCountOptions.indexOf(columnCount.value);
