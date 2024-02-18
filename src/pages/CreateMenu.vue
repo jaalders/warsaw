@@ -9,10 +9,18 @@
             <q-btn @click="decreaseRows" label="Decrease Rows" />
             <q-btn @click="increaseColumns" label="Increase Columns" />
             <q-btn @click="decreaseColumns" label="Decrease Columns" />
+            <q-btn @click="addMenuSectionLayout(0)" label="show layout" />
           </div>
           <div class="row">
             <div class="col-12">
-              <q-btn @click="addMenuSection" label="Add Menu Section" />
+              <q-btn outline rounded @click="addMenuSection" label="Add Menu Section" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div v-for="(index, layout) in selectedMenuLayout" :key="layout">
+                <component :is="menuLayouts[layout]" v-if="index" />
+              </div>
             </div>
           </div>
           <div class="row">
@@ -20,7 +28,7 @@
               <div @dragover.prevent @drop="openMenuItemsModal" style="height: 200px; border: 1px solid #2ecc71"></div>
             </div>
           </div>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-3">
               <div v-if="menuItems">
                 <div v-for="menuItem in menuItems" :key="menuItem.id">
@@ -36,7 +44,7 @@
             <div class="col-3"></div>
             <div class="col-3"></div>
             <div class="col-3"></div>
-          </div>
+          </div> -->
         </div>
 
         <div class="q-mt-md">
@@ -95,6 +103,11 @@
     @closeBasicMenuItemModal="closeBasicMenuItemModal"
     @addMenuItem="addMenuItem"
   />
+  <MenuSectionOptionsModal
+    :openMenuSectionOptionsModal="openMenuSectionOptionsModal"
+    @closeMenuSectionOptions="closeMenuSectionOptions"
+    @addMenuSectionLayout="addMenuSectionLayout"
+  />
 </template>
 
 <style scoped lang="scss">
@@ -109,6 +122,7 @@
 </style>
 
 <script setup lang="ts">
+import MenuSectionOptionsModal from 'src/components/MenuComponents/Modals/MenuSectionOptionsModal.vue';
 import { IMenuItem } from 'src/interfaces';
 import { computed, defineAsyncComponent, ref } from 'vue';
 const { BasicMenuItem, BasicMenuItemModal, AdvancedMenuItem, AdvancedMenuItemModal } = {
@@ -119,6 +133,30 @@ const { BasicMenuItem, BasicMenuItemModal, AdvancedMenuItem, AdvancedMenuItemMod
   BasicMenuItem: defineAsyncComponent(() => import('../components/MenuComponents/Templates/BasicMenuItem.vue')),
   BasicMenuItemModal: defineAsyncComponent(() => import('../components/MenuComponents/Modals/BasicMenuItemModal.vue')),
 };
+
+import {
+  OneColumn,
+  TwoColumn,
+  ThreeColumn,
+  FourColumn,
+  TwoColumnLeft,
+  TwoColumnRight,
+  ThreeColumnLeft,
+  ThreeColumnRight,
+} from '../components/MenuComponents/Layouts';
+
+const menuLayouts = [
+  OneColumn,
+  TwoColumn,
+  ThreeColumn,
+  FourColumn,
+  TwoColumnLeft,
+  TwoColumnRight,
+  ThreeColumnLeft,
+  ThreeColumnRight,
+];
+
+const selectedMenuLayout = ref(new Array(menuLayouts.length).fill(false));
 
 const draggedElementId = ref('');
 
@@ -231,6 +269,15 @@ const decreaseColumns = (): number => {
 };
 
 const addMenuSection = (): boolean => {
-  return openMenuSectionOptionsModal.value = true;
-}
+  return (openMenuSectionOptionsModal.value = true);
+};
+
+const addMenuSectionLayout = (index: number): boolean => {
+  debugger;
+  return (selectedMenuLayout.value[index] = true);
+};
+
+const closeMenuSectionOptions = (): boolean => {
+  return (openAdvancedMenuItemModal.value = false);
+};
 </script>
