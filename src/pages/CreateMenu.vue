@@ -20,7 +20,14 @@
           <div class="row">
             <div class="col-12">
               <div v-for="(index, layout) in selectedMenuLayout" :key="layout">
-                <component :is="menuLayouts[layout]" :selectedMenuSections="htmlContent" v-if="index" />
+                <component
+                  :is="menuLayouts[layout]"
+                  :selectedMenuSections="htmlContent"
+                  :draggedElementId="draggedElementId"
+                  @openMenuItemsModal="openMenuItemsModal"
+                  :component="componentToPass"
+                  v-if="index"
+                />
               </div>
             </div>
           </div>
@@ -127,7 +134,7 @@ import MenuSectionOptionsModal from 'src/components/MenuComponents/Modals/MenuSe
 import { IMenuItem } from 'src/interfaces';
 import { computed, defineAsyncComponent, ref } from 'vue';
 const {
-  //BasicMenuItem,
+  BasicMenuItem,
   BasicMenuItemModal,
   //AdvancedMenuItem,
   AdvancedMenuItemModal,
@@ -136,7 +143,7 @@ const {
   AdvancedMenuItemModal: defineAsyncComponent(
     () => import('../components/MenuComponents/Modals/AdvancedMenuItemModal.vue')
   ),
-  //BasicMenuItem: defineAsyncComponent(() => import('../components/MenuComponents/Templates/BasicMenuItem.vue')),
+  BasicMenuItem: defineAsyncComponent(() => import('../components/MenuComponents/Templates/BasicMenuItem.vue')),
   BasicMenuItemModal: defineAsyncComponent(() => import('../components/MenuComponents/Modals/BasicMenuItemModal.vue')),
 };
 
@@ -161,6 +168,8 @@ const menuLayouts = [
   ThreeColumnLeft,
   ThreeColumnRight,
 ];
+
+const componentToPass = BasicMenuItem;
 
 const selectedMenuLayout = ref(new Array(menuLayouts.length).fill(false));
 
