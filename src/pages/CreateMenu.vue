@@ -9,17 +9,18 @@
             <q-btn @click="decreaseRows" label="Decrease Rows" />
             <q-btn @click="increaseColumns" label="Increase Columns" />
             <q-btn @click="decreaseColumns" label="Decrease Columns" />
-            <q-btn @click="addMenuSectionLayout(0)" label="show layout" />
+            <q-btn @click="addMenuSection" label="show layout" />
           </div>
           <div class="row">
             <div class="col-12">
               <q-btn outline rounded @click="addMenuSection" label="Add Menu Section" />
+              <button @click="selectedMenuSections">Add More HTML</button>
             </div>
           </div>
           <div class="row">
             <div class="col-12">
               <div v-for="(index, layout) in selectedMenuLayout" :key="layout">
-                <component :is="menuLayouts[layout]" v-if="index" />
+                <component :is="menuLayouts[layout]" :selectedMenuSections="htmlContent" v-if="index" />
               </div>
             </div>
           </div>
@@ -125,12 +126,17 @@
 import MenuSectionOptionsModal from 'src/components/MenuComponents/Modals/MenuSectionOptionsModal.vue';
 import { IMenuItem } from 'src/interfaces';
 import { computed, defineAsyncComponent, ref } from 'vue';
-const { BasicMenuItem, BasicMenuItemModal, AdvancedMenuItem, AdvancedMenuItemModal } = {
-  AdvancedMenuItem: defineAsyncComponent(() => import('../components/MenuComponents/Templates/AdvancedMenuItem.vue')),
+const {
+  //BasicMenuItem,
+  BasicMenuItemModal,
+  //AdvancedMenuItem,
+  AdvancedMenuItemModal,
+} = {
+  //AdvancedMenuItem: defineAsyncComponent(() => import('../components/MenuComponents/Templates/AdvancedMenuItem.vue')),
   AdvancedMenuItemModal: defineAsyncComponent(
     () => import('../components/MenuComponents/Modals/AdvancedMenuItemModal.vue')
   ),
-  BasicMenuItem: defineAsyncComponent(() => import('../components/MenuComponents/Templates/BasicMenuItem.vue')),
+  //BasicMenuItem: defineAsyncComponent(() => import('../components/MenuComponents/Templates/BasicMenuItem.vue')),
   BasicMenuItemModal: defineAsyncComponent(() => import('../components/MenuComponents/Modals/BasicMenuItemModal.vue')),
 };
 
@@ -189,6 +195,8 @@ const openAdvancedMenuItemModal = ref(false);
 const openBasicMenuItemModal = ref(false);
 const openBasicItemListModal = ref(false);
 const openMenuSectionOptionsModal = ref(false);
+
+const htmlContent = ref('');
 
 const dragstart = (event: DragEvent) => {
   draggedElementId.value = '';
@@ -273,11 +281,15 @@ const addMenuSection = (): boolean => {
 };
 
 const addMenuSectionLayout = (index: number): boolean => {
-  debugger;
-  return (selectedMenuLayout.value[index] = true);
+  selectedMenuLayout.value[index] = true;
+  return (openMenuSectionOptionsModal.value = false);
 };
 
 const closeMenuSectionOptions = (): boolean => {
   return (openMenuSectionOptionsModal.value = false);
+};
+
+const selectedMenuSections = (): string => {
+  return (htmlContent.value += '<p>Additional HTML content.</p>');
 };
 </script>

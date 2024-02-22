@@ -3,14 +3,15 @@
     <div class="row">
       <div class="col-12">
         <p>One Column HTML</p>
+        <div v-html="selectedMenuSections"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-  menuSections: {
+defineProps({
+  selectedMenuSections: {
     type: String,
     required: false,
   },
