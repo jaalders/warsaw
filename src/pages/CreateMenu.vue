@@ -278,6 +278,6 @@ const addMenuSectionLayout = (index: number): boolean => {
 };
 
 const closeMenuSectionOptions = (): boolean => {
-  return (openAdvancedMenuItemModal.value = false);
+  return (openMenuSectionOptionsModal.value = false);
 };
 </script>

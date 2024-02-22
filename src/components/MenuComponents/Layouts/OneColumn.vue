@@ -7,3 +7,12 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+  const props = defineProps({
+  menuSections: {
+    type: String,
+    required: false,
+  },
+});
+</script>
